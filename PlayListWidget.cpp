@@ -17,40 +17,17 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     qDebug()<<"RowIndex:"<<rowIndex;
 
     model()->insertRow(rowIndex);
-    //QModelIndex index = model()->index(rowIndex,0);
 
-    //QListWidgetItem *item = new QListWidgetItem(this);
     QListWidgetItem *insertedItem = item(rowIndex);
 
     PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
-    //playlistItemWidget->setItemNumber(rowIndex);
     insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
 
-
-    /*
-    if(rowIndex == count())
-        addItem(item);
-    else*/
-    //insertItem(rowIndex, itemm);
     setItemWidget(insertedItem, playlistItemWidget);
 }
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
 {
-
-    /*
-    if (event->mimeData()->hasUrls()) {
-        event->acceptProposedAction();
-        return;
-    }
-
-    if ( event->source() != this ) {
-        setDragDropMode ( QAbstractItemView::DragDrop );
-    } else {
-        setDragDropMode (QAbstractItemView::InternalMove);
-    }
-    event->acceptProposedAction();
-*/
     dropIndicatorLine.active = true;
     viewport()->update();
     QListWidget::dragEnterEvent(event);
@@ -129,7 +106,7 @@ int PlayListWidget::getDroppingItemIndex(const QPointF &mousePosition)
     int overIndex = indexFromItem(currentItem).row();
     int index;
     QRect itemRect = visualItemRect(currentItem);
-    qDebug()<<"Item rect:"<<itemRect << "Mouse Pos:" <<mousePosition;
+    //qDebug()<<"Item rect:"<<itemRect << "Mouse Pos:" <<mousePosition;
     dropIndicatorPosition.setX(0);
     if(isDropIndicatorOnTopOrBottom(itemRect, mousePosition))
         index = overIndex;
