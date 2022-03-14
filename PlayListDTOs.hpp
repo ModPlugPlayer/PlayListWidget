@@ -8,3 +8,5 @@ struct PlayListItem {
     QString fileName;
     size_t duration = 0;
 };
+
+using PlayListItems = QList<PlayListItem>;

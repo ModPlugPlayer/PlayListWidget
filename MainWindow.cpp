@@ -42,3 +42,9 @@ void MainWindow::on_Add_clicked()
 
 }
 
+
+void MainWindow::on_Remove_clicked()
+{
+    ui->listWidget->removeSelectedItems();
+}
+

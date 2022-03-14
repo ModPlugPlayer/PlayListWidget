@@ -22,6 +22,8 @@ QT_END_NAMESPACE
          private slots:
                  void on_Add_clicked();
 
-             private:
+             void on_Remove_clicked();
+
+         private:
     Ui::MainWindow *ui;
 };

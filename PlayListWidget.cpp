@@ -27,6 +27,27 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     updateItemNumbers();
 }
 
+void PlayListWidget::removeSelectedItems()
+{
+    QList<QListWidgetItem*> itemsToBeRemoved = selectedItems();
+    if(itemsToBeRemoved.isEmpty())
+        return;
+    QList<int> itemIndicesToBeRemoved;
+    for(QListWidgetItem* currentItem:itemsToBeRemoved) {
+        PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
+        itemIndicesToBeRemoved.append(playListItemWidget->getItemNumber());
+    }
+    std::sort(itemIndicesToBeRemoved.begin(), itemIndicesToBeRemoved.end(), std::greater<>());
+    for(int i:itemIndicesToBeRemoved) {
+        QListWidgetItem* currentItem = item(i);
+        //removeItemWidget(currentItem);
+        model()->removeRow(i);
+        PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
+        delete playListItemWidget;
+    }
+    updateItemNumbers();
+}
+
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
 {
     dropIndicatorLine.active = true;

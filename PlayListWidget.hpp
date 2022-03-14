@@ -19,6 +19,7 @@ class PlayListWidget : public QListWidget {
      public:
         explicit PlayListWidget(QWidget *parent = nullptr);
         void addPlayListItem(const PlayListItem & playListItem, int rowIndex = -1);
+        void removeSelectedItems();
 
      signals:
         void fileDropped(QUrl fileUrl, int droppedIndex);
