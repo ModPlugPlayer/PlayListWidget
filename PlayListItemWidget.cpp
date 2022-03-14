@@ -25,6 +25,16 @@ PlayListItemWidget::~PlayListItemWidget()
     delete ui;
 }
 
+PlayListItem PlayListItemWidget::getData() const
+{
+    return data;
+}
+
+void PlayListItemWidget::setData(const PlayListItem & playListItem)
+{
+    data = playListItem;
+}
+
 size_t PlayListItemWidget::getItemNumber() const
 {
     return data.itemNumber;

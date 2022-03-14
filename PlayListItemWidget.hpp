@@ -15,6 +15,10 @@ class PlayListItemWidget : public QWidget
         explicit PlayListItemWidget(QWidget *parent = nullptr);
         explicit PlayListItemWidget(QWidget *parent, const PlayListItem &playListItem);
         ~PlayListItemWidget();
+
+        PlayListItem getData() const;
+        void setData(const PlayListItem &playListItem);
+
         size_t getItemNumber() const;
         void setItemNumber(size_t itemNumber);
 
