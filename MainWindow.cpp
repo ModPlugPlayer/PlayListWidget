@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->listWidget, &PlayListWidget::fileDropped, this, &MainWindow::onFileDropped);
+    connect(ui->listWidget, &PlayListWidget::filesDropped, this, &MainWindow::onFilesDropped);
 }
 
 void MainWindow::onFileDropped(QUrl fileUrl, int droppedIndex)
@@ -19,9 +20,17 @@ void MainWindow::onFileDropped(QUrl fileUrl, int droppedIndex)
     ui->listWidget->addPlayListItem(item, droppedIndex);
 }
 
-void MainWindow::onFilesDropped(QList<QUrl> filesUrl, int droppedIndex)
+void MainWindow::onFilesDropped(QList<QUrl> fileUrls, int droppedIndex)
 {
-
+    QList<PlayListItem> items;
+    for(QUrl &fileUrl:fileUrls) {
+        PlayListItem item;
+        item.itemNumber = droppedIndex;
+        item.fileName = fileUrl.fileName();
+        item.title = fileUrl.fileName();
+        items.append(item);
+    }
+    ui->listWidget->addPlayListItems(items);
 }
 
 MainWindow::~MainWindow()

@@ -27,6 +27,25 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     updateItemNumbers();
 }
 
+void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems, int rowIndex)
+{
+    if(rowIndex == -1)
+        rowIndex = count();
+    qDebug()<<"RowIndex:"<<rowIndex;
+    for(PlayListItem playListItem:playListItems) {
+        model()->insertRow(rowIndex);
+
+        QListWidgetItem *insertedItem = item(rowIndex);
+
+        PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
+        insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
+
+        setItemWidget(insertedItem, playlistItemWidget);
+        rowIndex++;
+    }
+    updateItemNumbers();
+}
+
 void PlayListWidget::removeSelectedItems()
 {
     QList<QListWidgetItem*> itemsToBeRemoved = selectedItems();
