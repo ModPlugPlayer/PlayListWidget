@@ -24,6 +24,7 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
 
     setItemWidget(insertedItem, playlistItemWidget);
+    updateItemNumbers();
 }
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
@@ -55,6 +56,7 @@ void PlayListWidget::dropEvent(QDropEvent * event)
     }
     QListWidget::dropEvent(event);
     event->acceptProposedAction();
+    updateItemNumbers();
 }
 
 void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
@@ -118,4 +120,17 @@ int PlayListWidget::getDroppingItemIndex(const QPointF &mousePosition)
 bool PlayListWidget::isDropIndicatorOnTopOrBottom(const QRect & itemRectangle, const QPointF & mousePosition)
 {
     return (itemRectangle.bottom() - mousePosition.y() -1 > mousePosition.y() - itemRectangle.top());
+}
+
+void PlayListWidget::updateItemNumbers()
+{
+    int len = count();
+    for(int i=0; i<len; i++) {
+        QListWidgetItem * currentItem = item(i);
+        PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
+        if(playListItemWidget->getItemNumber() != i)
+            playListItemWidget->setItemNumber(i);
+    }
+    //static int updateNo = 1;
+    //qDebug()<<"Update " + QString::number(updateNo++);
 }

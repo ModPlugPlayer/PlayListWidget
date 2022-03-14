@@ -34,4 +34,5 @@ class PlayListWidget : public QListWidget {
         QPointF getDropIndicatorPosition(const QPointF &mousePosition);
         int getDroppingItemIndex(const QPointF &mousePosition);
         static bool isDropIndicatorOnTopOrBottom(const QRect &itemRectangle, const QPointF &mousePosition);
+        void updateItemNumbers();
 };
