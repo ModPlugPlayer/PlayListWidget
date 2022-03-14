@@ -15,18 +15,24 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     if(rowIndex == -1)
         rowIndex = count();
     qDebug()<<"RowIndex:"<<rowIndex;
-    QListWidgetItem *item = new QListWidgetItem(this);
+
+    model()->insertRow(rowIndex);
+    //QModelIndex index = model()->index(rowIndex,0);
+
+    //QListWidgetItem *item = new QListWidgetItem(this);
+    QListWidgetItem *insertedItem = item(rowIndex);
+
     PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
     //playlistItemWidget->setItemNumber(rowIndex);
-    item->setSizeHint(playlistItemWidget->minimumSizeHint());
+    insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
 
-    setItemWidget(item, playlistItemWidget);
 
     /*
     if(rowIndex == count())
         addItem(item);
     else*/
-    insertItem(rowIndex, item);
+    //insertItem(rowIndex, itemm);
+    setItemWidget(insertedItem, playlistItemWidget);
 }
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
@@ -71,6 +77,7 @@ void PlayListWidget::dropEvent(QDropEvent * event)
             emit filesDropped(urls, getDroppingItemIndex(event->position()));
     }
     QListWidget::dropEvent(event);
+    event->acceptProposedAction();
 }
 
 void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
