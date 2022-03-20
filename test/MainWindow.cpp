@@ -41,7 +41,7 @@ void MainWindow::onFilesDropped(QList<QUrl> fileUrls, int droppedIndex)
         item.title = fileUrl.fileName();
         items.append(item);
     }
-    ui->listWidget->addPlayListItems(items);
+    ui->listWidget->addPlayListItems(items, droppedIndex);
 }
 
 MainWindow::~MainWindow()

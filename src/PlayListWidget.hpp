@@ -28,8 +28,8 @@ class PlayListWidget : public QListWidget {
         void removeSelectedItems();
 
      signals:
-        void fileDropped(QUrl fileUrl, int droppedIndex);
-        void filesDropped(QList<QUrl> fileUrls, int droppedIndex);
+        void fileDropped(const QUrl &fileUrl, int droppedIndex);
+        void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
      protected:
         void dragEnterEvent(QDragEnterEvent *event);

@@ -43,7 +43,7 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
     if(rowIndex == -1)
         rowIndex = count();
     //qDebug()<<"RowIndex:"<<rowIndex;
-    for(PlayListItem playListItem:playListItems) {
+    for(const PlayListItem &playListItem:playListItems) {
         model()->insertRow(rowIndex);
 
         QListWidgetItem *insertedItem = item(rowIndex);
@@ -104,6 +104,7 @@ void PlayListWidget::dropEvent(QDropEvent * event)
             emit fileDropped(urls[0], getDroppingItemDestinationIndex(event->position()));
         else if(urls.length() > 1)
             emit filesDropped(urls, getDroppingItemDestinationIndex(event->position()));
+        //qDebug()<<"Items dropped at index "<< getDroppingItemDestinationIndex(event->position());
     }
     if(!isValidDrop(event->position()))
         return;
@@ -117,7 +118,8 @@ void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
     e->acceptProposedAction();
     QListWidget::dragMoveEvent(e);
 
-    dropIndicator.setActive(isValidDrop(e->position()));
+    if(!e->mimeData()->hasUrls())
+        dropIndicator.setActive(isValidDrop(e->position()));
 
     dropIndicator.setBeginningPoint(getDropIndicatorPosition(e->position()));
     dropIndicator.setWidth(dropIndicator.getBeginningPoint().x() + width());
@@ -190,9 +192,11 @@ bool isAdjacent(const QList<int> &list) {
     if(len == 0 || len == 1)
         return false;
     int previousElement = list[0];
-    for(int i=1; i<len; i++)
+    for(int i=1; i<len; i++) {
         if(list[i] - previousElement != 1)
             return false;
+        previousElement = list[i];
+    }
     return true;
 }
 
@@ -204,7 +208,7 @@ bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
     int draggedItemIndex = currentIndex().row();
     if(selectedIndexes().count() == 1) {
         int itemIndexDifference = droppedItemDestinationIndex - draggedItemIndex;
-        qDebug()<<"Item index diff "<<itemIndexDifference;
+        //qDebug()<<"Item index diff "<<itemIndexDifference;
         if(itemIndexDifference == 1 || itemIndexDifference == 0)
             return false;
         else
@@ -223,7 +227,7 @@ bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
         return false;
     if(isAdjacent(selectedIndices)) {
         qDebug()<<"Adjacent";
-        if(endingDifference == 1 || beginningDifference == 0)
+        if(endingDifference <= 1 && beginningDifference >= 0)
             return false;
     }
     return true;
