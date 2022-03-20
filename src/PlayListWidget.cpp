@@ -185,6 +185,17 @@ void PlayListWidget::updateItemNumbers()
     //qDebug()<<"Update " + QString::number(updateNo++);
 }
 
+bool isAdjacent(const QList<int> &list) {
+    int len = list.count();
+    if(len == 0 || len == 1)
+        return false;
+    int previousElement = list[0];
+    for(int i=1; i<len; i++)
+        if(list[i] - previousElement != 1)
+            return false;
+    return true;
+}
+
 bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
 {
     if(selectedIndexes().isEmpty())
@@ -204,13 +215,16 @@ bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
         selectedIndices.append(currentIndex.row());
     }
     std::sort(selectedIndices.begin(), selectedIndices.end());
-    int beginDiff = droppedItemDestinationIndex - selectedIndices[0];
-    int endDiff = droppedItemDestinationIndex - selectedIndices[selectedIndices.length()-1];
-    qDebug()<<"Begin diff "<<beginDiff;
-    qDebug()<<"End diff "<<endDiff;
-    if(beginDiff == 1)
+    int beginningDifference = droppedItemDestinationIndex - selectedIndices[0];
+    int endingDifference = droppedItemDestinationIndex - selectedIndices[selectedIndices.length()-1];
+    qDebug()<<"Begin diff "<<beginningDifference;
+    qDebug()<<"End diff "<<endingDifference;
+    if(beginningDifference == 1)
         return false;
-    else
-        return true;
+    if(isAdjacent(selectedIndices)) {
+        qDebug()<<"Adjacent";
+        if(endingDifference == 1 || beginningDifference == 0)
+            return false;
+    }
     return true;
 }
