@@ -80,7 +80,7 @@ void PlayListWidget::removeSelectedItems()
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
 {
-    dropIndicatorLine.active = true;
+    dropIndicator.setActive(true);
     viewport()->update();
     QListWidget::dragEnterEvent(event);
     event->acceptProposedAction();
@@ -88,7 +88,7 @@ void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
 
 void PlayListWidget::dragLeaveEvent(QDragLeaveEvent * event)
 {
-    dropIndicatorLine.active = false;
+    dropIndicator.setActive(false);
     viewport()->update();
     QListWidget::dragLeaveEvent(event);
     event->accept();
@@ -96,7 +96,7 @@ void PlayListWidget::dragLeaveEvent(QDragLeaveEvent * event)
 
 void PlayListWidget::dropEvent(QDropEvent * event)
 {
-    dropIndicatorLine.active = false;
+    dropIndicator.setActive(false);
     viewport()->update();
     if (event->mimeData()->hasUrls()) {
         QList<QUrl> urls = event->mimeData()->urls();
@@ -114,8 +114,8 @@ void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
 {
     e->acceptProposedAction();
     QListWidget::dragMoveEvent(e);
-    dropIndicatorLine.beginningPoint = getDropIndicatorPosition(e->position());
-    dropIndicatorLine.width = dropIndicatorLine.beginningPoint.x() + width();
+    dropIndicator.setBeginningPoint(getDropIndicatorPosition(e->position()));
+    dropIndicator.setWidth(dropIndicator.getBeginningPoint().x() + width());
     //qDebug()<<"Dropping item index:" << getDroppingItemIndex(e->position());
     viewport()->update();
 }
@@ -124,13 +124,9 @@ void PlayListWidget::paintEvent(QPaintEvent * event)
 {
     QListWidget::paintEvent(event);
 
-    if(dropIndicatorLine.active) {
+    if(dropIndicator.isActive()) {
         QPainter painter(viewport());
-
-        //QPoint pos = mapFromGlobal(QCursor::pos());
-
-        painter.setPen(Qt::red);
-        painter.drawLine(dropIndicatorLine.beginningPoint.x(), dropIndicatorLine.beginningPoint.y(), dropIndicatorLine.beginningPoint.x() + dropIndicatorLine.width, dropIndicatorLine.beginningPoint.y());
+        dropIndicator.paint(painter);
     }
 }
 

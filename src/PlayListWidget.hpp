@@ -17,12 +17,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QDragMoveEvent>
 #include <QUrl>
 #include "PlayListDTOs.hpp"
-
-struct DropIndicatorLine {
-    bool active = false;
-    QPointF beginningPoint;
-    qreal width;
-};
+#include "DropIndicator.hpp"
 
 class PlayListWidget : public QListWidget {
     Q_OBJECT
@@ -42,7 +37,7 @@ class PlayListWidget : public QListWidget {
         void dropEvent(QDropEvent *e);
         void dragMoveEvent(QDragMoveEvent *e);
         void paintEvent(QPaintEvent *event);
-        DropIndicatorLine dropIndicatorLine;
+        DropIndicator dropIndicator;
         QPointF getDropIndicatorPosition(const QPointF &mousePosition);
         int getDroppingItemIndex(const QPointF &mousePosition);
         static bool isDropIndicatorOnTopOrBottom(const QRect &itemRectangle, const QPointF &mousePosition);
