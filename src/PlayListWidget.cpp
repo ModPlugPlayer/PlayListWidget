@@ -25,7 +25,7 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
 {
     if(rowIndex == -1)
         rowIndex = count();
-    qDebug()<<"RowIndex:"<<rowIndex;
+    //qDebug()<<"RowIndex:"<<rowIndex;
 
     model()->insertRow(rowIndex);
 
@@ -42,7 +42,7 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
 {
     if(rowIndex == -1)
         rowIndex = count();
-    qDebug()<<"RowIndex:"<<rowIndex;
+    //qDebug()<<"RowIndex:"<<rowIndex;
     for(PlayListItem playListItem:playListItems) {
         model()->insertRow(rowIndex);
 
@@ -101,10 +101,12 @@ void PlayListWidget::dropEvent(QDropEvent * event)
     if (event->mimeData()->hasUrls()) {
         QList<QUrl> urls = event->mimeData()->urls();
         if(urls.length() == 1)
-            emit fileDropped(urls[0], getDroppingItemIndex(event->position()));
+            emit fileDropped(urls[0], getDroppingItemDestinationIndex(event->position()));
         else if(urls.length() > 1)
-            emit filesDropped(urls, getDroppingItemIndex(event->position()));
+            emit filesDropped(urls, getDroppingItemDestinationIndex(event->position()));
     }
+    if(!isValidDrop(event->position()))
+        return;
     QListWidget::dropEvent(event);
     event->acceptProposedAction();
     updateItemNumbers();
@@ -114,6 +116,9 @@ void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
 {
     e->acceptProposedAction();
     QListWidget::dragMoveEvent(e);
+
+    dropIndicator.setActive(isValidDrop(e->position()));
+
     dropIndicator.setBeginningPoint(getDropIndicatorPosition(e->position()));
     dropIndicator.setWidth(dropIndicator.getBeginningPoint().x() + width());
     //qDebug()<<"Dropping item index:" << getDroppingItemIndex(e->position());
@@ -146,9 +151,8 @@ QPointF PlayListWidget::getDropIndicatorPosition(const QPointF &mousePosition)
     return dropIndicatorPosition;
 }
 
-int PlayListWidget::getDroppingItemIndex(const QPointF &mousePosition)
+int PlayListWidget::getDroppingItemDestinationIndex(const QPointF &mousePosition)
 {
-    QPointF dropIndicatorPosition;
     QListWidgetItem * currentItem = itemAt(mousePosition.toPoint());
     if(currentItem == nullptr)
         currentItem = item(count()-1);
@@ -156,7 +160,6 @@ int PlayListWidget::getDroppingItemIndex(const QPointF &mousePosition)
     int index;
     QRect itemRect = visualItemRect(currentItem);
     //qDebug()<<"Item rect:"<<itemRect << "Mouse Pos:" <<mousePosition;
-    dropIndicatorPosition.setX(0);
     if(isDropIndicatorOnTopOrBottom(itemRect, mousePosition))
         index = overIndex;
     else
@@ -180,4 +183,34 @@ void PlayListWidget::updateItemNumbers()
     }
     //static int updateNo = 1;
     //qDebug()<<"Update " + QString::number(updateNo++);
+}
+
+bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
+{
+    if(selectedIndexes().isEmpty())
+        return false;
+    int droppedItemDestinationIndex = getDroppingItemDestinationIndex(dropPosition);
+    int draggedItemIndex = currentIndex().row();
+    if(selectedIndexes().count() == 1) {
+        int itemIndexDifference = droppedItemDestinationIndex - draggedItemIndex;
+        qDebug()<<"Item index diff "<<itemIndexDifference;
+        if(itemIndexDifference == 1 || itemIndexDifference == 0)
+            return false;
+        else
+            return true;
+    }
+    QList<int> selectedIndices;
+    for(const QModelIndex &currentIndex : selectedIndexes()) {
+        selectedIndices.append(currentIndex.row());
+    }
+    std::sort(selectedIndices.begin(), selectedIndices.end());
+    int beginDiff = droppedItemDestinationIndex - selectedIndices[0];
+    int endDiff = droppedItemDestinationIndex - selectedIndices[selectedIndices.length()-1];
+    qDebug()<<"Begin diff "<<beginDiff;
+    qDebug()<<"End diff "<<endDiff;
+    if(beginDiff == 1)
+        return false;
+    else
+        return true;
+    return true;
 }

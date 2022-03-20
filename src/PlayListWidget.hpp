@@ -39,7 +39,8 @@ class PlayListWidget : public QListWidget {
         void paintEvent(QPaintEvent *event);
         DropIndicator dropIndicator;
         QPointF getDropIndicatorPosition(const QPointF &mousePosition);
-        int getDroppingItemIndex(const QPointF &mousePosition);
+        int getDroppingItemDestinationIndex(const QPointF &mousePosition);
         static bool isDropIndicatorOnTopOrBottom(const QRect &itemRectangle, const QPointF &mousePosition);
         void updateItemNumbers();
+        bool isValidDrop(const QPointF &dropPosition);
 };
