@@ -217,8 +217,8 @@ bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
     std::sort(selectedIndices.begin(), selectedIndices.end());
     int beginningDifference = droppedItemDestinationIndex - selectedIndices[0];
     int endingDifference = droppedItemDestinationIndex - selectedIndices[selectedIndices.length()-1];
-    qDebug()<<"Begin diff "<<beginningDifference;
-    qDebug()<<"End diff "<<endingDifference;
+    //qDebug()<<"Beginning difference "<<beginningDifference;
+    //qDebug()<<"Ending difference "<<endingDifference;
     if(beginningDifference == 1)
         return false;
     if(isAdjacent(selectedIndices)) {
