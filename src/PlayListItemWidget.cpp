@@ -27,7 +27,7 @@ PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & pl
     setItemNumber(playListItem.itemNumber);
     setFormat(playListItem.format);
     setTitle(playListItem.title);
-    setFileName(playListItem.fileName);
+    setFilePath(playListItem.filePath);
     setDuration(playListItem.duration);
 }
 
@@ -79,15 +79,15 @@ void PlayListItemWidget::setFormat(const QString & format)
     ui->format->setText(format);
 }
 
-const QString & PlayListItemWidget::getFileName() const
+const std::filesystem::path & PlayListItemWidget::getFilePath() const
 {
-    return data.fileName;
+    return data.filePath;
 }
 
-void PlayListItemWidget::setFileName(const QString & fileName)
+void PlayListItemWidget::setFilePath(const std::filesystem::path & filePath)
 {
-    data.fileName = fileName;
-    ui->fileName->setText(fileName);
+    data.filePath = filePath;
+    ui->fileName->setText(filePath.c_str());
 }
 
 size_t PlayListItemWidget::getDuration() const

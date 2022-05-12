@@ -78,6 +78,30 @@ void PlayListWidget::removeSelectedItems()
     updateItemNumbers();
 }
 
+void PlayListWidget::onPlay() {
+
+}
+
+void PlayListWidget::onPause() {
+
+}
+
+void PlayListWidget::onResume() {
+
+}
+
+void PlayListWidget::onStop() {
+
+}
+
+void PlayListWidget::onNextSong() {
+
+}
+
+void PlayListWidget::onPreviousSong() {
+
+}
+
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
 {
     dropIndicator.setActive(true);

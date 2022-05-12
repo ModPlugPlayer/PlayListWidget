@@ -1,5 +1,5 @@
 /*
-PlayList DTO definitions of PlayListWidget
+PlayListWindow class declarations for the test purposes of PlayListWidget
 Copyright (C) 2022 Volkan Orhan
 
 This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
@@ -10,14 +10,31 @@ You should have received a copy of the GNU Lesser General Public License along w
 */
 
 #pragma once
-#include <QString>
 
-struct PlayListItem {
-    size_t itemNumber = 0;
-    QString format;
-    QString title;
-    QString fileName;
-    size_t duration = 0;
+#include <QMainWindow>
+#include <QUrl>
+#include <QList>
+
+QT_BEGIN_NAMESPACE
+    namespace Ui { class PlayListWindow; }
+QT_END_NAMESPACE
+
+    class PlayListWindow : public QMainWindow
+{
+    Q_OBJECT
+
+         public:
+             PlayListWindow(QWidget *parent = nullptr);
+            ~PlayListWindow();
+         public slots:
+             void onFileDropped(QUrl fileUrl, int droppedIndex);
+             void onFilesDropped(QList<QUrl> fileUrls, int droppedIndex);
+
+         private slots:
+                 void on_Add_clicked();
+
+             void on_Remove_clicked();
+
+         private:
+    Ui::PlayListWindow *ui;
 };
-
-using PlayListItems = QList<PlayListItem>;

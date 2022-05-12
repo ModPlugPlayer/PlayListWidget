@@ -23,6 +23,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+file(GLOB MODPLUGPLAYERAPI_SRC
+    "../ModPlugPlayerAPI/src/*.hpp"
+    "../ModPlugPlayerAPI/src/*.cpp"
+)
+
 file(GLOB PLAYLISTWIDGET_SRC
     "src/*.hpp"
     "src/*.cpp"
@@ -40,6 +45,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PLAYLISTWIDGET_SRC}
         ${PLAYLISTWIDGET_TEST}
+        ${MODPLUGPLAYERAPI_SRC}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET PlayListWidget APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -50,6 +56,7 @@ else()
         add_library(PlayListWidget SHARED
             ${PLAYLISTWIDGET_SRC}
             ${PLAYLISTWIDGET_TEST}
+            ${MODPLUGPLAYERAPI_SRC}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
@@ -57,12 +64,14 @@ else()
         add_executable(PlayListWidget
             ${PLAYLISTWIDGET_SRC}
             ${PLAYLISTWIDGET_TEST}
+            ${MODPLUGPLAYERAPI_SRC}
         )
     endif()
 endif()
 
 include_directories(src)
 include_directories(test)
+include_directories(../ModPlugPlayerAPI/src)
 
 target_link_libraries(PlayListWidget PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 

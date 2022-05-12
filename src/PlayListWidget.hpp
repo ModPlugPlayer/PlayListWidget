@@ -16,10 +16,12 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QDropEvent>
 #include <QDragMoveEvent>
 #include <QUrl>
-#include "PlayListDTOs.hpp"
+#include <PlayList.hpp>
+#include <PlayListDTOs.hpp>
 #include "DropIndicator.hpp"
+#include "PlayList.hpp"
 
-class PlayListWidget : public QListWidget {
+class PlayListWidget : public QListWidget, public PlayList {
     Q_OBJECT
      public:
         explicit PlayListWidget(QWidget *parent = nullptr);
@@ -30,6 +32,14 @@ class PlayListWidget : public QListWidget {
      signals:
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
+
+    public slots:
+        void onPlay();
+        void onPause();
+        void onResume();
+        void onStop();
+        void onNextSong();
+        void onPreviousSong();
 
      protected:
         void dragEnterEvent(QDragEnterEvent *event);

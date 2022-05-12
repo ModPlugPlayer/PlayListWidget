@@ -12,6 +12,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #pragma once
 #include <QWidget>
 #include "PlayListDTOs.hpp"
+#include <filesystem>
 
 namespace Ui {
 class PlayListItemWidget;
@@ -32,8 +33,8 @@ class PlayListItemWidget : public QWidget
         size_t getItemNumber() const;
         void setItemNumber(size_t itemNumber);
 
-        const QString & getFileName() const;
-        void setFileName(const QString & fileName);
+        const std::filesystem::path & getFilePath() const;
+        void setFilePath(const std::filesystem::path & filePath);
 
         size_t getDuration() const;
         void setDuration(size_t duration);

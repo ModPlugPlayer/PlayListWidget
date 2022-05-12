@@ -9,14 +9,16 @@ This library is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "MainWindow.hpp"
-
+#include "PlayListWindow.hpp"
+#include "ControlWindow.hpp"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    PlayListWindow w;
+    ControlWindow c(&w);
+    c.show();
     w.show();
     return a.exec();
 }
