@@ -23,18 +23,24 @@ QT_END_NAMESPACE
 {
     Q_OBJECT
 
-         public:
-             PlayListWindow(QWidget *parent = nullptr);
-            ~PlayListWindow();
-         public slots:
-             void onFileDropped(QUrl fileUrl, int droppedIndex);
-             void onFilesDropped(QList<QUrl> fileUrls, int droppedIndex);
+    public:
+     PlayListWindow(QWidget *parent = nullptr);
+    ~PlayListWindow();
+    signals:
+        void hidden();
+    public slots:
+        void onFileDropped(QUrl fileUrl, int droppedIndex);
+        void onFilesDropped(QList<QUrl> fileUrls, int droppedIndex);
 
-         private slots:
-                 void on_Add_clicked();
+    private slots:
+        void on_Add_clicked();
+        void on_Remove_clicked();
 
-             void on_Remove_clicked();
-
-         private:
+    private:
     Ui::PlayListWindow *ui;
+    void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event);
+    QRect windowGeometry;
+
 };

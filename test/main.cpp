@@ -16,9 +16,9 @@ You should have received a copy of the GNU Lesser General Public License along w
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    PlayListWindow w;
-    ControlWindow c(&w);
+    //PlayListWindow w;
+    ControlWindow c;
     c.show();
-    w.show();
+    //w.show();
     return a.exec();
 }

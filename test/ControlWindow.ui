@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Player Window</string>
+   <string>Player Test Window</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0">
    <property name="leftMargin">
@@ -105,10 +105,8 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Repeat</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
+      <string>Repeat
+None</string>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -127,9 +125,6 @@
       <string>Playlist</string>
      </property>
      <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
       <bool>true</bool>
      </property>
      <property name="autoDefault">

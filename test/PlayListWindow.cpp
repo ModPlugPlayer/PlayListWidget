@@ -20,6 +20,11 @@ PlayListWindow::PlayListWindow(QWidget *parent)
     ui->setupUi(this);
     connect(ui->listWidget, &PlayListWidget::fileDropped, this, &PlayListWindow::onFileDropped);
     connect(ui->listWidget, &PlayListWidget::filesDropped, this, &PlayListWindow::onFilesDropped);
+    ui->listWidget->setDragDropMode(QAbstractItemView::InternalMove);
+    windowGeometry = geometry();
+    windowGeometry.setX(parent->geometry().x());
+    windowGeometry.setY(parent->geometry().y());
+    //ui->listWidget.model().rowsMoved.connect(lambda: anyfunction())
 }
 
 void PlayListWindow::onFileDropped(QUrl fileUrl, int droppedIndex)
@@ -49,6 +54,20 @@ PlayListWindow::~PlayListWindow()
     delete ui;
 }
 
+void PlayListWindow::closeEvent(QCloseEvent * event)
+{
+}
+
+void PlayListWindow::showEvent(QShowEvent * event)
+{
+    setGeometry(windowGeometry);
+}
+
+void PlayListWindow::hideEvent(QHideEvent * event)
+{
+    windowGeometry = geometry();
+    emit hidden();
+}
 
 void PlayListWindow::on_Add_clicked()
 {
@@ -61,7 +80,6 @@ void PlayListWindow::on_Add_clicked()
     //ui->listWidget->addItem(QString::number(ui->listWidget->count()));
 
 }
-
 
 void PlayListWindow::on_Remove_clicked()
 {

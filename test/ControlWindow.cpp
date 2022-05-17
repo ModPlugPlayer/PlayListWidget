@@ -7,15 +7,19 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui(new Ui::ControlWindow)
 {
     ui->setupUi(this);
+    this->playListWindow = new PlayListWindow(this);
+    QObject::connect(this->playListWindow, &PlayListWindow::hidden, this, &ControlWindow::onPlayListEditorIsHidden);
+    ui->playlistButton->click();
 }
 
+/*
 ControlWindow::ControlWindow(PlayListWindow * playListWindow) :
     QDialog(playListWindow),
     ui(new Ui::ControlWindow)
 {
     this->playListWindow = playListWindow;
     ui->setupUi(this);
-}
+}*/
 
 ControlWindow::~ControlWindow()
 {
@@ -49,32 +53,32 @@ bool ControlWindow::isKeptStayingInViewPort() const
 
 void ControlWindow::onStop()
 {
-
+    emit stop();
 }
 
 void ControlWindow::onPlay()
 {
-
+    emit play();
 }
 
 void ControlWindow::onPause()
 {
-
+    emit pause();
 }
 
 void ControlWindow::onResume()
 {
-
+    emit resume();
 }
 
 void ControlWindow::onPrevious()
 {
-
+    emit previous();
 }
 
 void ControlWindow::onNext()
 {
-
+    emit next();
 }
 
 void ControlWindow::onChangeVolume(int volume)
@@ -82,7 +86,7 @@ void ControlWindow::onChangeVolume(int volume)
 
 }
 
-void ControlWindow::onChangeRepeat(ModPlugPlayer::Repeat repeat)
+void ControlWindow::onChangeRepeat(RepeatState repeat)
 {
 
 }
@@ -114,48 +118,72 @@ void ControlWindow::onSetSnappingThreshold(int snappingThreshold)
 
 void ControlWindow::on_previousButton_clicked()
 {
-    previous();
+    emit previous();
 }
-
-
-void ControlWindow::on_playButton_clicked()
-{
-
-}
-
-
-void ControlWindow::on_pauseButton_clicked()
-{
-
-}
-
-
-void ControlWindow::on_resumeButton_clicked()
-{
-
-}
-
-
-void ControlWindow::on_stopButton_clicked()
-{
-
-}
-
-
-void ControlWindow::on_repeatButton_toggled(bool checked)
-{
-
-}
-
-
-void ControlWindow::on_playlistButton_toggled(bool checked)
-{
-
-}
-
 
 void ControlWindow::on_nextButton_clicked()
 {
-
+    emit next();
 }
 
+void ControlWindow::on_playButton_clicked()
+{
+    emit play();
+}
+
+void ControlWindow::on_pauseButton_clicked()
+{
+    emit pause();
+}
+
+void ControlWindow::on_resumeButton_clicked()
+{
+    emit resume();
+}
+
+void ControlWindow::on_stopButton_clicked()
+{
+    emit stop();
+}
+
+void ControlWindow::on_repeatButton_clicked()
+{
+    toggleRepeat();
+    if(repeatState == RepeatState::None)
+        ui->repeatButton->setText("Repeat\nNone");
+    if(repeatState == RepeatState::SingleTrack)
+        ui->repeatButton->setText("Repeat\nSong");
+    if(repeatState == RepeatState::PlayList)
+        ui->repeatButton->setText("Repeat\nPlaylist");
+}
+
+void ControlWindow::on_playlistButton_toggled(bool turnOn)
+{
+    if(turnOn) {
+        playListWindow->show();
+    }
+    else {
+        playListWindow->hide();
+    }
+    //ui->actionPlayListEditor->setChecked(turnOn);
+    //ui->optionButtons->togglePlayListEditorButton(turnOn);
+}
+
+void ControlWindow::onPlayListEditorIsHidden()
+{
+    ui->playlistButton->setChecked(false);
+}
+
+void ControlWindow::toggleRepeat()
+{
+    if(repeatState == RepeatState::None)
+        repeatState = RepeatState::SingleTrack;
+    else
+        if(repeatState == RepeatState::SingleTrack)
+            repeatState = RepeatState::PlayList;
+    else
+        if(repeatState == RepeatState::PlayList)
+            repeatState = RepeatState::None;
+
+    emit changeRepeat(repeatState);
+}

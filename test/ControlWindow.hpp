@@ -8,13 +8,15 @@ namespace Ui {
 class ControlWindow;
 }
 
+using namespace ModPlugPlayer;
+
 class ControlWindow : public QDialog, public ModPlugPlayer::Player
 {
     Q_OBJECT
 
 public:
     explicit ControlWindow(QWidget *parent = nullptr);
-    explicit ControlWindow(PlayListWindow *playListWindow = nullptr);
+    //explicit ControlWindow(PlayListWindow *playListWindow = nullptr);
     ~ControlWindow();
     int getVolume() const;
     bool isAlwaysOnTop() const;
@@ -30,7 +32,7 @@ signals:
     void previous();
     void next();
     void changeVolume(int volume);
-    void changeRepeat(ModPlugPlayer::Repeat repeat);
+    void changeRepeat(ModPlugPlayer::RepeatState repeat);
     void setAlwaysOnTop(bool alwaysOnTop);
     bool getAlwaysOnTop() const;
     void hideTitleBar(bool hide);
@@ -45,7 +47,7 @@ public slots:
     void onPrevious();
     void onNext();
     void onChangeVolume(int volume);
-    void onChangeRepeat(ModPlugPlayer::Repeat repeat);
+    void onChangeRepeat(ModPlugPlayer::RepeatState repeat);
     void onSetAlwaysOnTop(bool alwaysOnTop);
     void onHideTitleBar(bool hide);
     void onSetSnapToViewPort(bool snapToViewPort);
@@ -59,11 +61,14 @@ private slots:
     void on_pauseButton_clicked();
     void on_resumeButton_clicked();
     void on_stopButton_clicked();
-    void on_repeatButton_toggled(bool checked);
+    void on_repeatButton_clicked();
     void on_playlistButton_toggled(bool checked);
+    void onPlayListEditorIsHidden();
 
-    private:
-        Ui::ControlWindow *ui;
-        PlayListWindow * playListWindow;
+private:
+    Ui::ControlWindow *ui;
+    PlayListWindow * playListWindow;
+    RepeatState repeatState = RepeatState::None;
+    void toggleRepeat();
 };
 
