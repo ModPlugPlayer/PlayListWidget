@@ -17,6 +17,8 @@ PlayListItemWidget::PlayListItemWidget(QWidget *parent) :
     ui(new Ui::PlayListItemWidget)
 {
     ui->setupUi(this);
+    setMouseTracking(true);
+    setAttribute(Qt::WA_Hover);
 }
 
 PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & playListItem) :
@@ -54,7 +56,7 @@ size_t PlayListItemWidget::getItemNumber() const
 void PlayListItemWidget::setItemNumber(size_t itemNumber)
 {
     data.itemNumber = itemNumber;
-    ui->itemNumber->setText(QString::number(itemNumber));
+    ui->status->setItemNumber(itemNumber);
 }
 
 const QString & PlayListItemWidget::getTitle() const
@@ -77,6 +79,20 @@ void PlayListItemWidget::setFormat(const QString & format)
 {
     data.format = format;
     ui->format->setText(format);
+}
+
+void PlayListItemWidget::enterEvent(QEnterEvent *event)
+{
+    event->accept();
+    ui->status->showOnlyPlayPauseButton();
+    //setStyleSheet("background-color: rgba(128, 128, 128, 48);");
+}
+
+void PlayListItemWidget::leaveEvent(QEvent *event)
+{
+    event->accept();
+    ui->status->showOnlyItemNumber();
+    //setStyleSheet("");
 }
 
 const std::filesystem::path & PlayListItemWidget::getFilePath() const

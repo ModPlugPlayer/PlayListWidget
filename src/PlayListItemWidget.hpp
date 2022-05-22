@@ -13,6 +13,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QWidget>
 #include "PlayListDTOs.hpp"
 #include <filesystem>
+#include <QtWidgets>
 
 namespace Ui {
 class PlayListItemWidget;
@@ -45,7 +46,10 @@ class PlayListItemWidget : public QWidget
         const QString & getFormat() const;
         void setFormat(const QString & format);
     private:
-    Ui::PlayListItemWidget *ui;
-    PlayListItem data;
+        Ui::PlayListItemWidget *ui;
+        PlayListItem data;
+    protected:
+        void enterEvent(QEnterEvent *event);
+        void leaveEvent(QEvent *event);
 };
 

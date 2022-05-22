@@ -20,6 +20,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <PlayListDTOs.hpp>
 #include "DropIndicator.hpp"
 #include "PlayList.hpp"
+#include "PlayListItemWidget.hpp"
 
 class PlayListWidget : public QListWidget, public PlayList {
     Q_OBJECT
@@ -28,6 +29,7 @@ class PlayListWidget : public QListWidget, public PlayList {
         void addPlayListItem(const PlayListItem & playListItem, int rowIndex = -1);
         void addPlayListItems(const QList<PlayListItem> & playListItems, int rowIndex = -1);
         void removeSelectedItems();
+        PlayListItem getCurrentItem();
 
      signals:
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
@@ -53,4 +55,5 @@ class PlayListWidget : public QListWidget, public PlayList {
         static bool isDropIndicatorOnTopOrBottom(const QRect &itemRectangle, const QPointF &mousePosition);
         void updateItemNumbers();
         bool isValidDrop(const QPointF &dropPosition);
+        PlayListItemWidget *currentItem = nullptr;
 };

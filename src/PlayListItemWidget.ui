@@ -47,48 +47,7 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="1" column="3">
-    <widget class="QLabel" name="fileName">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(140, 140, 140)</string>
-     </property>
-     <property name="text">
-      <string>File Name</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5" rowspan="2">
-    <widget class="QLabel" name="duration">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>60</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Duration</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
+   <item row="0" column="2">
     <widget class="QLabel" name="title">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -127,7 +86,7 @@
     </widget>
    </item>
    <item row="0" column="0" rowspan="2">
-    <widget class="QLabel" name="itemNumber">
+    <widget class="PlayListItemStatusWidget" name="status" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -140,48 +99,65 @@
        <height>0</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>30</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3" rowspan="2">
+    <widget class="QLabel" name="duration">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>60</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>#</string>
+      <string>Duration</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="1" column="2">
+    <widget class="QLabel" name="fileName">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(140, 140, 140)</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>6</width>
-       <height>20</height>
-      </size>
+     <property name="text">
+      <string>File Name</string>
      </property>
-    </spacer>
-   </item>
-   <item row="0" column="4" rowspan="2">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>6</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlayListItemStatusWidget</class>
+   <extends>QWidget</extends>
+   <header>PlayListItemStatusWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

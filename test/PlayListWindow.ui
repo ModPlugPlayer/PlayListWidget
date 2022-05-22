@@ -97,6 +97,15 @@ background-color: rgb(255, 255, 255);
     </item>
     <item row="1" column="0" colspan="2">
      <widget class="PlayListWidget" name="listWidget">
+      <property name="styleSheet">
+       <string notr="true">QListView::item:hover {
+    background: rgba(128, 128, 128, 64);
+}
+
+QListView::item:selected:hover {
+    background: rgba(128, 128, 255, 64);
+}</string>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>

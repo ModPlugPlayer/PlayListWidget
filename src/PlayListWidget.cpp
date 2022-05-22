@@ -78,6 +78,16 @@ void PlayListWidget::removeSelectedItems()
     updateItemNumbers();
 }
 
+PlayListItem PlayListWidget::getCurrentItem()
+{
+    if(currentItem != nullptr)
+        return currentItem->getData();
+    else {
+        PlayListItem playListItem;
+        return playListItem;
+    }
+}
+
 void PlayListWidget::onPlay() {
 
 }
