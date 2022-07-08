@@ -21,6 +21,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include "DropIndicator.hpp"
 #include "PlayList.hpp"
 #include "PlayListItemWidget.hpp"
+#include <QMap>
 
 class PlayListWidget : public QListWidget, public PlayList {
     Q_OBJECT
@@ -37,11 +38,13 @@ class PlayListWidget : public QListWidget, public PlayList {
 
     public slots:
         void onPlay();
+        void onPlay(PlayListItem playListItem);
         void onPause();
         void onResume();
         void onStop();
         void onNextSong();
         void onPreviousSong();
+        void onClear();
 
      protected:
         void dragEnterEvent(QDragEnterEvent *event);
@@ -56,4 +59,6 @@ class PlayListWidget : public QListWidget, public PlayList {
         void updateItemNumbers();
         bool isValidDrop(const QPointF &dropPosition);
         PlayListItemWidget *currentItem = nullptr;
+        QMap<PlayListItem, PlayListItemWidget *> playListMap;
+        PlayListItems playList;
 };

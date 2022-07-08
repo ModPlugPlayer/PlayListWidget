@@ -89,27 +89,44 @@ PlayListItem PlayListWidget::getCurrentItem()
 }
 
 void PlayListWidget::onPlay() {
+    if(currentItem == nullptr)
+        return;
+}
 
+void PlayListWidget::onPlay(PlayListItem playListItem)
+{
+    if(currentItem == nullptr)
+        return;
 }
 
 void PlayListWidget::onPause() {
-
+    if(currentItem == nullptr)
+        return;
 }
 
 void PlayListWidget::onResume() {
-
+    if(currentItem == nullptr)
+        return;
 }
 
 void PlayListWidget::onStop() {
-
+    if(currentItem == nullptr)
+        return;
 }
 
 void PlayListWidget::onNextSong() {
-
+    if(currentItem == nullptr)
+        return;
 }
 
 void PlayListWidget::onPreviousSong() {
+    if(currentItem == nullptr)
+        return;
+}
 
+void PlayListWidget::onClear()
+{
+    QListWidget::clear();
 }
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
