@@ -38,8 +38,11 @@ signals:
     void hideTitleBar(bool hide);
     bool snapToViewPort(bool toBeSnappedToViewPort) const;
     void keepStayingInViewPort(bool toBeKeptStayingInViewPort);
+    void open(std::filesystem::path filePath);
+    void scrubTime(int position);
 
 public slots:
+    void onOpen(std::filesystem::path filePath);
     void onStop();
     void onPlay();
     void onPause();
@@ -47,6 +50,7 @@ public slots:
     void onPrevious();
     void onNext();
     void onChangeVolume(int volume);
+    void onScrubTime(int position);
     void onChangeRepeat(ModPlugPlayer::RepeatState repeat);
     void onSetAlwaysOnTop(bool alwaysOnTop);
     void onHideTitleBar(bool hide);

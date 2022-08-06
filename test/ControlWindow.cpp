@@ -51,6 +51,11 @@ bool ControlWindow::isKeptStayingInViewPort() const
     return false;
 }
 
+void ControlWindow::onOpen(std::filesystem::path filePath)
+{
+
+}
+
 void ControlWindow::onStop()
 {
     emit stop();
@@ -82,6 +87,11 @@ void ControlWindow::onNext()
 }
 
 void ControlWindow::onChangeVolume(int volume)
+{
+
+}
+
+void ControlWindow::onScrubTime(int position)
 {
 
 }
