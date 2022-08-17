@@ -157,16 +157,16 @@ void PlayListWidget::dropEvent(QDropEvent * event)
             emit filesDropped(urls, getDroppingItemDestinationIndex(event->position()));
         //qDebug()<<"Items dropped at index "<< getDroppingItemDestinationIndex(event->position());
     }
-    if(!isValidDrop(event->position()))
+    if(!event->mimeData()->hasUrls() //file drop is not checked whether the drop is valid or not
+            && !isValidDrop(event->position()))
         return;
     QListWidget::dropEvent(event);
-    event->acceptProposedAction();
     updateItemNumbers();
+    event->acceptProposedAction();
 }
 
 void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
 {
-    e->acceptProposedAction();
     QListWidget::dragMoveEvent(e);
 
     if(!e->mimeData()->hasUrls())
@@ -176,6 +176,7 @@ void PlayListWidget::dragMoveEvent(QDragMoveEvent * e)
     dropIndicator.setWidth(dropIndicator.getBeginningPoint().x() + width());
     //qDebug()<<"Dropping item index:" << getDroppingItemIndex(e->position());
     viewport()->update();
+    e->acceptProposedAction();
 }
 
 void PlayListWidget::paintEvent(QPaintEvent * event)
