@@ -19,6 +19,7 @@ PlayListWidget::PlayListWidget(QWidget *parent)
 {
     setAcceptDrops(true);
     QListWidget::setDropIndicatorShown(false);
+    QObject::connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
 }
 
 void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowIndex)
@@ -187,6 +188,13 @@ void PlayListWidget::paintEvent(QPaintEvent * event)
         QPainter painter(viewport());
         dropIndicator.paint(painter);
     }
+}
+
+void PlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
+{
+    PlayListItemWidget * widget = dynamic_cast<PlayListItemWidget*>(itemWidget(item));
+    emit play(widget->getData());
+    //qDebug()<<"Item double clicked " << widget->getFilePath().c_str();
 }
 
 QPointF PlayListWidget::getDropIndicatorPosition(const QPointF &mousePosition)

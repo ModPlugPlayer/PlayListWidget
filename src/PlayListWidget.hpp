@@ -36,6 +36,14 @@ class PlayListWidget : public QListWidget, public PlayList {
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
+        void play(PlayListItem playListItem);
+        void pause();
+        void resume();
+        void stop();
+        void next();
+        void previous();
+        void clear();
+
     public slots:
         void onPlay();
         void onPlay(PlayListItem playListItem);
@@ -45,6 +53,9 @@ class PlayListWidget : public QListWidget, public PlayList {
         void onNextSong();
         void onPreviousSong();
         void onClear();
+
+    private slots:
+        void onItemDoubleClicked(QListWidgetItem *item);
 
      protected:
         void dragEnterEvent(QDragEnterEvent *event);

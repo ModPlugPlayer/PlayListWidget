@@ -64,8 +64,16 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255,0);</string>
+     </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normalon>:/Graphics/Vectoral/play.svg</normalon>
+      </iconset>
      </property>
     </widget>
    </item>

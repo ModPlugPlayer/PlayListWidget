@@ -29,6 +29,25 @@ void PlayListItemStatusWidget::showOnlyPlayPauseButton()
     ui->playPauseButton->show();
 }
 
+void PlayListItemStatusWidget::setStatus(PlayListItemStatus status)
+{
+    this->status = status;
+    switch(status) {
+    case PlayListItemStatus::Paused:
+        ui->playPauseButton->setIcon(iconPause->getActiveIcon());
+        break;
+    case PlayListItemStatus::Playing:
+        break;
+    case PlayListItemStatus::Stopped:
+        break;
+    }
+}
+
+PlayListItemStatus PlayListItemStatusWidget::getStatus()
+{
+    return status;
+}
+
 PlayListItemStatusWidget::PlayListItemStatusWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PlayListItemStatusWidget)
@@ -40,4 +59,17 @@ PlayListItemStatusWidget::PlayListItemStatusWidget(QWidget *parent) :
 PlayListItemStatusWidget::~PlayListItemStatusWidget()
 {
     delete ui;
+}
+
+void PlayListItemStatusWidget::on_playPauseButton_clicked()
+{
+    switch(status) {
+    case PlayListItemStatus::Paused:
+        break;
+    case PlayListItemStatus::Playing:
+        break;
+    case PlayListItemStatus::Stopped:
+        break;
+    }
+
 }

@@ -12,22 +12,39 @@ You should have received a copy of the GNU Lesser General Public License along w
 #pragma once
 
 #include <QWidget>
+#include <SVGIcon.hpp>
+#include <QPushButton>
 
 namespace Ui {
 class PlayListItemStatusWidget;
 }
+
+enum class PlayListItemStatus {
+    Stopped, Playing, Paused
+};
 
 class PlayListItemStatusWidget : public QWidget
 {
     Q_OBJECT
     public:
         void setItemNumber(size_t itemNumber);
+        void setStatus(PlayListItemStatus status);
+        PlayListItemStatus getStatus();
+        explicit PlayListItemStatusWidget(QWidget *parent = nullptr);
         void showOnlyItemNumber();
         void showOnlyPlayPauseButton();
-        explicit PlayListItemStatusWidget(QWidget *parent = nullptr);
         ~PlayListItemStatusWidget();
 
-    private:
+private slots:
+        void on_playPauseButton_clicked();
+
+private:
         Ui::PlayListItemStatusWidget *ui;
+        PlayListItemStatus status = PlayListItemStatus::Stopped;
+protected:
+        SVGIcon *iconPlay, *iconPause, *iconStop,
+                *iconRewind, *iconFastForward, *iconPrevious, *iconNext;
+        std::vector<QPushButton *> buttons;
+        std::vector<SVGIcon *> icons;
 };
 
