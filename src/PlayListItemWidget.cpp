@@ -16,16 +16,14 @@ PlayListItemWidget::PlayListItemWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PlayListItemWidget)
 {
-    ui->setupUi(this);
-    setMouseTracking(true);
-    setAttribute(Qt::WA_Hover);
+    init();
 }
 
 PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & playListItem) :
     QWidget(parent),
     ui(new Ui::PlayListItemWidget)
 {
-    ui->setupUi(this);
+    init();
     setItemNumber(playListItem.itemNumber);
     setFormat(playListItem.format);
     setTitle(playListItem.title);
@@ -35,6 +33,10 @@ PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & pl
 
 PlayListItemWidget::~PlayListItemWidget()
 {
+    QObject::disconnect(ui->status, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
+    QObject::disconnect(ui->status, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
+    QObject::disconnect(ui->status, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlay);
+
     delete ui;
 }
 
@@ -79,6 +81,21 @@ void PlayListItemWidget::setFormat(const QString & format)
 {
     data.format = format;
     ui->format->setText(format);
+}
+
+void PlayListItemWidget::onPlay()
+{
+    emit play(data);
+}
+
+void PlayListItemWidget::init()
+{
+    ui->setupUi(this);
+    setMouseTracking(true);
+    setAttribute(Qt::WA_Hover);
+    QObject::connect(ui->status, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
+    QObject::connect(ui->status, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
+    QObject::connect(ui->status, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlay);
 }
 
 void PlayListItemWidget::enterEvent(QEnterEvent *event)

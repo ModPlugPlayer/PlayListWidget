@@ -45,9 +45,20 @@ class PlayListItemWidget : public QWidget
 
         const QString & getFormat() const;
         void setFormat(const QString & format);
+
+    signals:
+        void pause();
+        void resume();
+        void play(PlayListItem playListItem);
+
+    private slots:
+        void onPlay();
+
     private:
         Ui::PlayListItemWidget *ui;
         PlayListItem data;
+        void init();
+
     protected:
         void enterEvent(QEnterEvent *event);
         void leaveEvent(QEvent *event);

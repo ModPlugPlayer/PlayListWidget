@@ -31,6 +31,11 @@ QT_END_NAMESPACE
     public slots:
         void onFileDropped(QUrl fileUrl, int droppedIndex);
         void onFilesDropped(QList<QUrl> fileUrls, int droppedIndex);
+        void onPlayNext();
+        void onPlayPrevious();
+        void onStop();
+        void onPlay();
+        void onPause();
 
     private slots:
         void on_Add_clicked();

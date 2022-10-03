@@ -54,6 +54,7 @@ PlayListItemStatusWidget::PlayListItemStatusWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     showOnlyItemNumber();
+    QObject::connect(ui->playPauseButton, &QPushButton::clicked, this, &PlayListItemStatusWidget::onClick);
 }
 
 PlayListItemStatusWidget::~PlayListItemStatusWidget()
@@ -61,15 +62,17 @@ PlayListItemStatusWidget::~PlayListItemStatusWidget()
     delete ui;
 }
 
-void PlayListItemStatusWidget::on_playPauseButton_clicked()
+void PlayListItemStatusWidget::onClick()
 {
     switch(status) {
-    case PlayListItemStatus::Paused:
-        break;
     case PlayListItemStatus::Playing:
+        emit pause();
+        break;
+    case PlayListItemStatus::Paused:
+        emit resume();
         break;
     case PlayListItemStatus::Stopped:
+        emit play();
         break;
     }
-
 }

@@ -18,45 +18,45 @@ public:
     explicit ControlWindow(QWidget *parent = nullptr);
     //explicit ControlWindow(PlayListWindow *playListWindow = nullptr);
     ~ControlWindow();
-    int getVolume() const;
-    bool isAlwaysOnTop() const;
-    bool isTitleBarHidden() const;
-    bool isSnapToViewPort() const;
-    bool isKeptStayingInViewPort() const;
+    int getVolume() const override;
+    bool isAlwaysOnTop() const override;
+    bool isTitleBarHidden() const override;
+    bool isSnapToViewPort() const override;
+    bool isKeptStayingInViewPort() const override;
 
 signals:
-    void stop();
-    void play();
-    void pause();
-    void resume();
-    void previous();
-    void next();
-    void changeVolume(int volume);
-    void changeRepeat(ModPlugPlayer::RepeatState repeat);
-    void setAlwaysOnTop(bool alwaysOnTop);
-    bool getAlwaysOnTop() const;
-    void hideTitleBar(bool hide);
-    bool snapToViewPort(bool toBeSnappedToViewPort) const;
-    void keepStayingInViewPort(bool toBeKeptStayingInViewPort);
-    void open(std::filesystem::path filePath);
-    void scrubTime(int position);
+    void stop() override;
+    void play() override;
+    void pause() override;
+    void resume() override;
+    void previous() override;
+    void next() override;
+    void changeVolume(int volume) override;
+    void changeRepeat(ModPlugPlayer::RepeatState repeat) override;
+    void setAlwaysOnTop(bool alwaysOnTop) override;
+    void hideTitleBar(bool hide) override;
+    void snapToViewPort(bool toBeSnappedToViewPort) override;
+    void keepStayingInViewPort(bool toBeKeptStayingInViewPort) override;
+    void open(std::filesystem::path filePath) override;
+    void scrubTime(int position) override;
 
 public slots:
-    void onOpen(std::filesystem::path filePath);
-    void onStop();
-    void onPlay();
-    void onPause();
-    void onResume();
-    void onPrevious();
-    void onNext();
-    void onChangeVolume(int volume);
-    void onScrubTime(int position);
-    void onChangeRepeat(ModPlugPlayer::RepeatState repeat);
-    void onSetAlwaysOnTop(bool alwaysOnTop);
-    void onHideTitleBar(bool hide);
-    void onSetSnapToViewPort(bool snapToViewPort);
-    void onSetKeepStayingInViewPort(bool keepStayingInViewPort);
-    void onSetSnappingThreshold(int snappingThreshold);
+    void onOpen(std::filesystem::path filePath) override;
+    void onOpen(PlayListItem playListItem) override;
+    void onStop() override;
+    void onPlay() override;
+    void onPause() override;
+    void onResume() override;
+    void onPrevious() override;
+    void onNext() override;
+    void onChangeVolume(int volume) override;
+    void onScrubTime(int position) override;
+    void onChangeRepeat(ModPlugPlayer::RepeatState repeat) override;
+    void onSetAlwaysOnTop(bool alwaysOnTop) override;
+    void onHideTitleBar(bool hide) override;
+    void onSetSnapToViewPort(bool snapToViewPort) override;
+    void onSetKeepStayingInViewPort(bool keepStayingInViewPort) override;
+    void onSetSnappingThreshold(int snappingThreshold) override;
 
 private slots:
     void on_previousButton_clicked();
@@ -74,5 +74,6 @@ private:
     PlayListWindow * playListWindow;
     RepeatState repeatState = RepeatState::None;
     void toggleRepeat();
+    PlayingMode playingMode = PlayingMode::SingleTrack;
 };
 

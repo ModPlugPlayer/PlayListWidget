@@ -34,10 +34,12 @@ class PlayListItemStatusWidget : public QWidget
         void showOnlyItemNumber();
         void showOnlyPlayPauseButton();
         ~PlayListItemStatusWidget();
-
+signals:
+        void play();
+        void pause();
+        void resume();
 private slots:
-        void on_playPauseButton_clicked();
-
+        void onClick();
 private:
         Ui::PlayListItemStatusWidget *ui;
         PlayListItemStatus status = PlayListItemStatus::Stopped;

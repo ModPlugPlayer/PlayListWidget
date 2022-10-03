@@ -30,45 +30,47 @@ class PlayListWidget : public QListWidget, public PlayList {
         void addPlayListItem(const PlayListItem & playListItem, int rowIndex = -1);
         void addPlayListItems(const QList<PlayListItem> & playListItems, int rowIndex = -1);
         void removeSelectedItems();
-        PlayListItem getCurrentItem();
+        PlayListItem getCurrentItem() override;
 
      signals:
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
-        void play(PlayListItem playListItem);
-        void pause();
-        void resume();
-        void stop();
-        void next();
-        void previous();
-        void clear();
+        void play(PlayListItem playListItem) override;
+        void pause() override;
+        void resume() override;
+        void stop() override;
+        void next() override;
+        void previous() override;
+        void clear() override;
 
     public slots:
-        void onPlay();
-        void onPlay(PlayListItem playListItem);
-        void onPause();
-        void onResume();
-        void onStop();
-        void onNextSong();
-        void onPreviousSong();
-        void onClear();
+        void onPlay() override;
+        void onPlay(PlayListItem playListItem) override;
+        void onPause() override;
+        void onResume() override;
+        void onStop() override;
+        void onNextSong() override;
+        void onPreviousSong() override;
+        void onClear() override;
 
     private slots:
         void onItemDoubleClicked(QListWidgetItem *item);
 
      protected:
-        void dragEnterEvent(QDragEnterEvent *event);
-        void dragLeaveEvent(QDragLeaveEvent *event);
-        void dropEvent(QDropEvent *e);
-        void dragMoveEvent(QDragMoveEvent *e);
-        void paintEvent(QPaintEvent *event);
+        void dragEnterEvent(QDragEnterEvent *event) override;
+        void dragLeaveEvent(QDragLeaveEvent *event) override;
+        void dropEvent(QDropEvent *e) override;
+        void dragMoveEvent(QDragMoveEvent *e) override;
+        void paintEvent(QPaintEvent *event) override;
         DropIndicator dropIndicator;
         QPointF getDropIndicatorPosition(const QPointF &mousePosition);
         int getDroppingItemDestinationIndex(const QPointF &mousePosition);
         static bool isDropIndicatorOnTopOrBottom(const QRect &itemRectangle, const QPointF &mousePosition);
         void updateItemNumbers();
         bool isValidDrop(const QPointF &dropPosition);
+        void connectSignals(PlayListItemWidget &playListItemWidget);
+        void disconnectSignals(PlayListItemWidget &playListItemWidget);
         PlayListItemWidget *currentItem = nullptr;
         QMap<PlayListItem, PlayListItemWidget *> playListMap;
         PlayListItems playList;

@@ -49,6 +49,31 @@ void PlayListWindow::onFilesDropped(QList<QUrl> fileUrls, int droppedIndex)
     ui->listWidget->addPlayListItems(items, droppedIndex);
 }
 
+void PlayListWindow::onPlayNext()
+{
+
+}
+
+void PlayListWindow::onPlayPrevious()
+{
+
+}
+
+void PlayListWindow::onStop()
+{
+
+}
+
+void PlayListWindow::onPlay()
+{
+
+}
+
+void PlayListWindow::onPause()
+{
+
+}
+
 PlayListWindow::~PlayListWindow()
 {
     delete ui;

@@ -33,6 +33,7 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     QListWidgetItem *insertedItem = item(rowIndex);
 
     PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
+    connectSignals(*playlistItemWidget);
     insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
 
     setItemWidget(insertedItem, playlistItemWidget);
@@ -50,6 +51,7 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
         QListWidgetItem *insertedItem = item(rowIndex);
 
         PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
+        connectSignals(*playlistItemWidget);
         insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
 
         setItemWidget(insertedItem, playlistItemWidget);
@@ -66,6 +68,7 @@ void PlayListWidget::removeSelectedItems()
     QList<int> itemIndicesToBeRemoved;
     for(QListWidgetItem* currentItem:itemsToBeRemoved) {
         PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
+        disconnectSignals(*playListItemWidget);
         itemIndicesToBeRemoved.append(playListItemWidget->getItemNumber());
     }
     std::sort(itemIndicesToBeRemoved.begin(), itemIndicesToBeRemoved.end(), std::greater<>());
@@ -291,4 +294,17 @@ bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
             return false;
     }
     return true;
+}
+
+void PlayListWidget::connectSignals(PlayListItemWidget &playListItemWidget) {
+    QObject::connect(&playListItemWidget, &PlayListItemWidget::pause, this, &PlayListWidget::pause);
+    QObject::connect(&playListItemWidget, &PlayListItemWidget::resume, this, &PlayListWidget::resume);
+    QObject::connect(&playListItemWidget, &PlayListItemWidget::play, this, &PlayListWidget::play);
+
+}
+
+void PlayListWidget::disconnectSignals(PlayListItemWidget &playListItemWidget) {
+    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::pause, this, &PlayListWidget::pause);
+    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::resume, this, &PlayListWidget::resume);
+    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::play, this, &PlayListWidget::play);
 }

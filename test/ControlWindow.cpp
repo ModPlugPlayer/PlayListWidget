@@ -53,7 +53,12 @@ bool ControlWindow::isKeptStayingInViewPort() const
 
 void ControlWindow::onOpen(std::filesystem::path filePath)
 {
+    playingMode = PlayingMode::SingleTrack;
+}
 
+void ControlWindow::onOpen(PlayListItem playListItem)
+{
+    playingMode = PlayingMode::PlayList;
 }
 
 void ControlWindow::onStop()
