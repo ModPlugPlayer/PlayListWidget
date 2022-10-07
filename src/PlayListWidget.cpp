@@ -24,6 +24,7 @@ PlayListWidget::PlayListWidget(QWidget *parent)
 
 void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowIndex)
 {
+    const std::lock_guard<std::mutex> locker(listItemsLock);
     if(rowIndex == -1)
         rowIndex = count();
     //qDebug()<<"RowIndex:"<<rowIndex;
@@ -42,6 +43,7 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
 
 void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems, int rowIndex)
 {
+    const std::lock_guard<std::mutex> locker(listItemsLock);
     if(rowIndex == -1)
         rowIndex = count();
     //qDebug()<<"RowIndex:"<<rowIndex;
@@ -62,6 +64,7 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
 
 void PlayListWidget::removeSelectedItems()
 {
+    const std::lock_guard<std::mutex> locker(listItemsLock);
     QList<QListWidgetItem*> itemsToBeRemoved = selectedItems();
     if(itemsToBeRemoved.isEmpty())
         return;
@@ -84,12 +87,11 @@ void PlayListWidget::removeSelectedItems()
 
 PlayListItem PlayListWidget::getCurrentItem()
 {
+    const std::lock_guard<std::mutex> locker(listItemsLock);
+    PlayListItem playListItem;
     if(currentItem != nullptr)
-        return currentItem->getData();
-    else {
-        PlayListItem playListItem;
-        return playListItem;
-    }
+        playListItem = currentItem->getData();
+    return playListItem;
 }
 
 void PlayListWidget::onPlay() {
@@ -97,10 +99,12 @@ void PlayListWidget::onPlay() {
         return;
 }
 
-void PlayListWidget::onPlay(PlayListItem playListItem)
-{
-    if(currentItem == nullptr)
-        return;
+void PlayListWidget::onPlay(const QUuid playListItemId) {
+    const std::lock_guard<std::mutex> locker(listItemsLock);
+    if(playListMap.contains(playListItemId)) {
+        PlayListItemWidget* playListItemWidget = playListMap[playListItemId];
+        playListItemWidget->setStatus(PlayingStatus::Playing);
+    }
 }
 
 void PlayListWidget::onPause() {
@@ -135,6 +139,7 @@ void PlayListWidget::onClear()
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
 {
+
     dropIndicator.setActive(true);
     viewport()->update();
     QListWidget::dragEnterEvent(event);
@@ -239,6 +244,8 @@ bool PlayListWidget::isDropIndicatorOnTopOrBottom(const QRect & itemRectangle, c
 
 void PlayListWidget::updateItemNumbers()
 {
+    bool listItemsLockIsAlreadyLocked = !listItemsLock.try_lock();
+
     int len = count();
     for(int i=0; i<len; i++) {
         QListWidgetItem * currentItem = item(i);
@@ -248,6 +255,8 @@ void PlayListWidget::updateItemNumbers()
     }
     //static int updateNo = 1;
     //qDebug()<<"Update " + QString::number(updateNo++);
+    if(!listItemsLockIsAlreadyLocked)
+        listItemsLock.unlock();
 }
 
 bool isAdjacent(const QList<int> &list) {

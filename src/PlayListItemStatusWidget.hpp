@@ -14,22 +14,21 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QWidget>
 #include <SVGIcon.hpp>
 #include <QPushButton>
+#include <APIStructures.hpp>
 
 namespace Ui {
 class PlayListItemStatusWidget;
 }
 
-enum class PlayListItemStatus {
-    Stopped, Playing, Paused
-};
+using namespace ModPlugPlayer;
 
 class PlayListItemStatusWidget : public QWidget
 {
     Q_OBJECT
     public:
         void setItemNumber(size_t itemNumber);
-        void setStatus(PlayListItemStatus status);
-        PlayListItemStatus getStatus();
+        void setStatus(PlayingStatus status);
+        PlayingStatus getStatus();
         explicit PlayListItemStatusWidget(QWidget *parent = nullptr);
         void showOnlyItemNumber();
         void showOnlyPlayPauseButton();
@@ -42,7 +41,7 @@ private slots:
         void onClick();
 private:
         Ui::PlayListItemStatusWidget *ui;
-        PlayListItemStatus status = PlayListItemStatus::Stopped;
+        PlayingStatus status = PlayingStatus::Stopped;
 protected:
         SVGIcon *iconPlay, *iconPause, *iconStop,
                 *iconRewind, *iconFastForward, *iconPrevious, *iconNext;

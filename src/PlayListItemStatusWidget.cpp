@@ -29,21 +29,21 @@ void PlayListItemStatusWidget::showOnlyPlayPauseButton()
     ui->playPauseButton->show();
 }
 
-void PlayListItemStatusWidget::setStatus(PlayListItemStatus status)
+void PlayListItemStatusWidget::setStatus(PlayingStatus status)
 {
     this->status = status;
     switch(status) {
-    case PlayListItemStatus::Paused:
+    case PlayingStatus::Paused:
         ui->playPauseButton->setIcon(iconPause->getActiveIcon());
         break;
-    case PlayListItemStatus::Playing:
-        break;
-    case PlayListItemStatus::Stopped:
+    case PlayingStatus::Playing:
+    case PlayingStatus::Stopped:
+        ui->playPauseButton->setIcon(iconPlay->getActiveIcon());
         break;
     }
 }
 
-PlayListItemStatus PlayListItemStatusWidget::getStatus()
+PlayingStatus PlayListItemStatusWidget::getStatus()
 {
     return status;
 }
@@ -65,13 +65,13 @@ PlayListItemStatusWidget::~PlayListItemStatusWidget()
 void PlayListItemStatusWidget::onClick()
 {
     switch(status) {
-    case PlayListItemStatus::Playing:
+    case PlayingStatus::Playing:
         emit pause();
         break;
-    case PlayListItemStatus::Paused:
+    case PlayingStatus::Paused:
         emit resume();
         break;
-    case PlayListItemStatus::Stopped:
+    case PlayingStatus::Stopped:
         emit play();
         break;
     }

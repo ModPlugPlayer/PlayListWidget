@@ -9,6 +9,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui->setupUi(this);
     this->playListWindow = new PlayListWindow(this);
     QObject::connect(this->playListWindow, &PlayListWindow::hidden, this, &ControlWindow::onPlayListEditorIsHidden);
+    //QObject::connect(this->playListWindow, &PlayListWindow::hidden, this, &ControlWindow::onPlayListEditorIsHidden);
     ui->playlistButton->click();
 }
 

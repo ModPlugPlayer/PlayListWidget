@@ -12,12 +12,15 @@ You should have received a copy of the GNU Lesser General Public License along w
 #pragma once
 #include <QWidget>
 #include "PlayListDTOs.hpp"
+#include <APIStructures.hpp>
 #include <filesystem>
 #include <QtWidgets>
 
 namespace Ui {
 class PlayListItemWidget;
 }
+
+using namespace ModPlugPlayer;
 
 class PlayListItemWidget : public QWidget
 {
@@ -46,21 +49,26 @@ class PlayListItemWidget : public QWidget
         const QString & getFormat() const;
         void setFormat(const QString & format);
 
+        void setStatus(PlayingStatus status);
+        PlayingStatus getStatus();
+
     signals:
         void pause();
         void resume();
-        void play(PlayListItem playListItem);
+        void play(ModPlugPlayer::PlayListItem playListItem);
 
     private slots:
-        void onPlay();
+        void onPlayClickFromStatusWidget();
 
     private:
         Ui::PlayListItemWidget *ui;
         PlayListItem data;
-        void init();
 
     protected:
         void enterEvent(QEnterEvent *event);
         void leaveEvent(QEvent *event);
+        void init();
+        void connectSignals();
+        void disconnectSignals();
 };
 

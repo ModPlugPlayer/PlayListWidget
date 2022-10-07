@@ -14,15 +14,13 @@ You should have received a copy of the GNU Lesser General Public License along w
 
 PlayListItemWidget::PlayListItemWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PlayListItemWidget)
-{
+    ui(new Ui::PlayListItemWidget) {
     init();
 }
 
 PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & playListItem) :
     QWidget(parent),
-    ui(new Ui::PlayListItemWidget)
-{
+    ui(new Ui::PlayListItemWidget) {
     init();
     setItemNumber(playListItem.itemNumber);
     setFormat(playListItem.format);
@@ -31,105 +29,124 @@ PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & pl
     setDuration(playListItem.duration);
 }
 
-PlayListItemWidget::~PlayListItemWidget()
-{
-    QObject::disconnect(ui->status, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
-    QObject::disconnect(ui->status, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
-    QObject::disconnect(ui->status, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlay);
-
+PlayListItemWidget::~PlayListItemWidget() {
+    disconnectSignals();
     delete ui;
 }
 
-PlayListItem PlayListItemWidget::getData() const
-{
+PlayListItem PlayListItemWidget::getData() const {
     return data;
 }
 
-void PlayListItemWidget::setData(const PlayListItem & playListItem)
-{
+void PlayListItemWidget::setData(const PlayListItem & playListItem) {
     data = playListItem;
 }
 
-size_t PlayListItemWidget::getItemNumber() const
-{
+size_t PlayListItemWidget::getItemNumber() const {
     return data.itemNumber;
 }
 
-void PlayListItemWidget::setItemNumber(size_t itemNumber)
-{
+void PlayListItemWidget::setItemNumber(size_t itemNumber) {
     data.itemNumber = itemNumber;
-    ui->status->setItemNumber(itemNumber);
+    ui->statusWidget->setItemNumber(itemNumber);
 }
 
-const QString & PlayListItemWidget::getTitle() const
-{
+const QString & PlayListItemWidget::getTitle() const {
     return data.title;
 }
 
-void PlayListItemWidget::setTitle(const QString & title)
-{
+void PlayListItemWidget::setTitle(const QString & title) {
     data.title = title;
     ui->title->setText(title);
 }
 
-const QString & PlayListItemWidget::getFormat() const
-{
+const QString & PlayListItemWidget::getFormat() const {
     return data.title;
 }
 
-void PlayListItemWidget::setFormat(const QString & format)
-{
+void PlayListItemWidget::setFormat(const QString & format) {
     data.format = format;
     ui->format->setText(format);
 }
 
-void PlayListItemWidget::onPlay()
-{
+static void setLabelFontWeight(QLabel *label, const QFont::Weight weight) {
+    QFont font = label->font();
+    font.setWeight(weight);
+    label->setFont(font);
+}
+
+void PlayListItemWidget::setStatus(PlayingStatus status) {
+    ui->statusWidget->setStatus(status);
+    switch(status) {
+        case PlayingStatus::Playing:
+            setLabelFontWeight(ui->fileName, QFont::Weight::Bold);
+            setLabelFontWeight(ui->duration, QFont::Weight::Bold);
+            setLabelFontWeight(ui->format, QFont::Weight::Bold);
+            setLabelFontWeight(ui->title, QFont::Weight::Bold);
+            break;
+        case PlayingStatus::Paused:
+        case PlayingStatus::Stopped:
+            setLabelFontWeight(ui->fileName, QFont::Weight::Normal);
+            setLabelFontWeight(ui->duration, QFont::Weight::Normal);
+            setLabelFontWeight(ui->format, QFont::Weight::Normal);
+            setLabelFontWeight(ui->title, QFont::Weight::Normal);
+            break;
+    }
+}
+
+PlayingStatus PlayListItemWidget::getStatus() {
+    return ui->statusWidget->getStatus();
+}
+
+void PlayListItemWidget::onPlayClickFromStatusWidget() {
     emit play(data);
 }
 
-void PlayListItemWidget::init()
-{
+void PlayListItemWidget::init() {
     ui->setupUi(this);
     setMouseTracking(true);
     setAttribute(Qt::WA_Hover);
-    QObject::connect(ui->status, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
-    QObject::connect(ui->status, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
-    QObject::connect(ui->status, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlay);
+    connectSignals();
 }
 
-void PlayListItemWidget::enterEvent(QEnterEvent *event)
-{
+void PlayListItemWidget::connectSignals() {
+    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
+    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
+    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
+}
+
+void PlayListItemWidget::disconnectSignals() {
+    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
+    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
+    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
+}
+
+void PlayListItemWidget::enterEvent(QEnterEvent *event) {
     event->accept();
-    ui->status->showOnlyPlayPauseButton();
+    ui->statusWidget->showOnlyPlayPauseButton();
     //setStyleSheet("background-color: rgba(128, 128, 128, 48);");
 }
 
-void PlayListItemWidget::leaveEvent(QEvent *event)
-{
+void PlayListItemWidget::leaveEvent(QEvent *event) {
     event->accept();
-    ui->status->showOnlyItemNumber();
+    ui->statusWidget->showOnlyItemNumber();
     //setStyleSheet("");
 }
 
-const std::filesystem::path & PlayListItemWidget::getFilePath() const
-{
+const std::filesystem::path & PlayListItemWidget::getFilePath() const {
     return data.filePath;
 }
 
-void PlayListItemWidget::setFilePath(const std::filesystem::path & filePath)
-{
+void PlayListItemWidget::setFilePath(const std::filesystem::path & filePath) {
     data.filePath = filePath;
     ui->fileName->setText(filePath.c_str());
 }
 
-size_t PlayListItemWidget::getDuration() const
-{
+size_t PlayListItemWidget::getDuration() const {
     return data.duration;
 }
 
-void PlayListItemWidget::setDuration(size_t duration)
-{
+void PlayListItemWidget::setDuration(size_t duration) {
     data.duration = duration;
     ui->duration->setText(QString::number(duration));
 }

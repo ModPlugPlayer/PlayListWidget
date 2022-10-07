@@ -22,6 +22,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include "PlayList.hpp"
 #include "PlayListItemWidget.hpp"
 #include <QMap>
+#include <mutex>
 
 class PlayListWidget : public QListWidget, public PlayList {
     Q_OBJECT
@@ -46,7 +47,7 @@ class PlayListWidget : public QListWidget, public PlayList {
 
     public slots:
         void onPlay() override;
-        void onPlay(PlayListItem playListItem) override;
+        void onPlay(const QUuid playListItemId) override;
         void onPause() override;
         void onResume() override;
         void onStop() override;
@@ -67,11 +68,16 @@ class PlayListWidget : public QListWidget, public PlayList {
         QPointF getDropIndicatorPosition(const QPointF &mousePosition);
         int getDroppingItemDestinationIndex(const QPointF &mousePosition);
         static bool isDropIndicatorOnTopOrBottom(const QRect &itemRectangle, const QPointF &mousePosition);
+        /**
+         * @brief updateItemNumbers Updates item number of each playlist item.
+         * If listItemsLock is not locked outside of this method, this method locks it until this method finishes to make the operation atomic.
+         */
         void updateItemNumbers();
         bool isValidDrop(const QPointF &dropPosition);
         void connectSignals(PlayListItemWidget &playListItemWidget);
         void disconnectSignals(PlayListItemWidget &playListItemWidget);
         PlayListItemWidget *currentItem = nullptr;
-        QMap<PlayListItem, PlayListItemWidget *> playListMap;
+        std::mutex listItemsLock;
+        QMap<QUuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
 };
