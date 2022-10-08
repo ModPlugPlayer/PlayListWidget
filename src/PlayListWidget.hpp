@@ -37,7 +37,7 @@ class PlayListWidget : public QListWidget, public PlayList {
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
-        void play(PlayListItem playListItem) override;
+        void play(const ModPlugPlayer::PlayListItem playListItem) override;
         void pause() override;
         void resume() override;
         void stop() override;
@@ -47,7 +47,7 @@ class PlayListWidget : public QListWidget, public PlayList {
 
     public slots:
         void onPlay() override;
-        void onPlay(const QUuid playListItemId) override;
+        void onPlay(const ModPlugPlayer::PlayListItem playListItem) override;
         void onPause() override;
         void onResume() override;
         void onStop() override;
@@ -64,6 +64,7 @@ class PlayListWidget : public QListWidget, public PlayList {
         void dropEvent(QDropEvent *e) override;
         void dragMoveEvent(QDragMoveEvent *e) override;
         void paintEvent(QPaintEvent *event) override;
+        void scrollToItemIfNeeded(QListWidgetItem *listWidgetItem);
         DropIndicator dropIndicator;
         QPointF getDropIndicatorPosition(const QPointF &mousePosition);
         int getDroppingItemDestinationIndex(const QPointF &mousePosition);

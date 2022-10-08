@@ -34,11 +34,11 @@ void PlayListItemStatusWidget::setStatus(PlayingStatus status)
     this->status = status;
     switch(status) {
     case PlayingStatus::Paused:
-        ui->playPauseButton->setIcon(iconPause->getActiveIcon());
+        //ui->playPauseButton->setIcon(iconPause->getActiveIcon());
         break;
     case PlayingStatus::Playing:
     case PlayingStatus::Stopped:
-        ui->playPauseButton->setIcon(iconPlay->getActiveIcon());
+        //ui->playPauseButton->setIcon(iconPlay->getActiveIcon());
         break;
     }
 }

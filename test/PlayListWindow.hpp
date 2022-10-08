@@ -14,25 +14,27 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QMainWindow>
 #include <QUrl>
 #include <QList>
+#include <Player.hpp>
 
 QT_BEGIN_NAMESPACE
     namespace Ui { class PlayListWindow; }
 QT_END_NAMESPACE
 
-    class PlayListWindow : public QMainWindow
-{
+using namespace ModPlugPlayer;
+
+class PlayListWindow : public QMainWindow {
     Q_OBJECT
 
     public:
-     PlayListWindow(QWidget *parent = nullptr);
+     PlayListWindow(QWidget *parent, Player *playerWindow);
     ~PlayListWindow();
     signals:
         void hidden();
     public slots:
         void onFileDropped(QUrl fileUrl, int droppedIndex);
         void onFilesDropped(QList<QUrl> fileUrls, int droppedIndex);
-        void onPlayNext();
-        void onPlayPrevious();
+        void onNext();
+        void onPrevious();
         void onStop();
         void onPlay();
         void onPause();
@@ -47,5 +49,6 @@ QT_END_NAMESPACE
     void showEvent(QShowEvent *event);
     void hideEvent(QHideEvent *event);
     QRect windowGeometry;
+    Player *playerWindow;
 
 };

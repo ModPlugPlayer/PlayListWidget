@@ -11,15 +11,22 @@ You should have received a copy of the GNU Lesser General Public License along w
 
 #include "PlayListWindow.hpp"
 #include "./ui_PlayListWindow.h"
-#include "PlayListItemWidget.hpp"
+#include "ControlWindow.hpp"
+#include <QObject>
 
-PlayListWindow::PlayListWindow(QWidget *parent)
+PlayListWindow::PlayListWindow(QWidget *parent, Player *playerWindow)
     : QMainWindow(parent)
     , ui(new Ui::PlayListWindow)
 {
     ui->setupUi(this);
+    this->playerWindow = playerWindow;
     connect(ui->listWidget, &PlayListWidget::fileDropped, this, &PlayListWindow::onFileDropped);
     connect(ui->listWidget, &PlayListWidget::filesDropped, this, &PlayListWindow::onFilesDropped);
+    QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::previous, ui->listWidget, &PlayListWidget::onPreviousSong);
+    QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::next, ui->listWidget, &PlayListWidget::onNextSong);
+    QObject::connect(ui->listWidget, qOverload<ModPlugPlayer::PlayListItem>(&PlayListWidget::play), (ControlWindow *)this->playerWindow, qOverload<ModPlugPlayer::PlayListItem>(&ControlWindow::onOpen));
+    QObject::connect((ControlWindow *)this->playerWindow, qOverload<ModPlugPlayer::PlayListItem>(&ControlWindow::open), ui->listWidget, qOverload<ModPlugPlayer::PlayListItem>(&PlayListWidget::onPlay));
+    //connect((QWidget *) playerWindow, &ControlWindow::next, this, &PlayListWindow::onPlayNext);
     ui->listWidget->setDragDropMode(QAbstractItemView::InternalMove);
     windowGeometry = geometry();
     windowGeometry.setX(parent->geometry().x());
@@ -30,6 +37,7 @@ PlayListWindow::PlayListWindow(QWidget *parent)
 void PlayListWindow::onFileDropped(QUrl fileUrl, int droppedIndex)
 {
     PlayListItem item;
+    item.id = QUuid::createUuid();
     item.itemNumber = droppedIndex;
     item.filePath = fileUrl.path().toStdString();
     item.title = fileUrl.fileName();
@@ -41,6 +49,7 @@ void PlayListWindow::onFilesDropped(QList<QUrl> fileUrls, int droppedIndex)
     QList<PlayListItem> items;
     for(QUrl &fileUrl:fileUrls) {
         PlayListItem item;
+        item.id = QUuid::createUuid();
         item.itemNumber = droppedIndex;
         item.filePath = fileUrl.path().toStdString();
         item.title = fileUrl.fileName();
@@ -49,12 +58,12 @@ void PlayListWindow::onFilesDropped(QList<QUrl> fileUrls, int droppedIndex)
     ui->listWidget->addPlayListItems(items, droppedIndex);
 }
 
-void PlayListWindow::onPlayNext()
+void PlayListWindow::onNext()
 {
 
 }
 
-void PlayListWindow::onPlayPrevious()
+void PlayListWindow::onPrevious()
 {
 
 }
@@ -98,6 +107,7 @@ void PlayListWindow::on_Add_clicked()
 {
     PlayListItem item;
     item.itemNumber = ui->listWidget->count();
+    item.id = QUuid::createUuid();
     ui->listWidget->addPlayListItem(item);
     //ui->listWidget->insertItem(ui->listWidget->count(), QString::number(ui->listWidget->count()));
 

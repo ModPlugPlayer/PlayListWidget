@@ -36,6 +36,7 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
     connectSignals(*playlistItemWidget);
     insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
+    playListMap[playListItem.id] = playlistItemWidget;
 
     setItemWidget(insertedItem, playlistItemWidget);
     updateItemNumbers();
@@ -46,7 +47,6 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
     const std::lock_guard<std::mutex> locker(listItemsLock);
     if(rowIndex == -1)
         rowIndex = count();
-    //qDebug()<<"RowIndex:"<<rowIndex;
     for(const PlayListItem &playListItem:playListItems) {
         model()->insertRow(rowIndex);
 
@@ -55,6 +55,8 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
         PlayListItemWidget *playlistItemWidget = new PlayListItemWidget(this, playListItem);
         connectSignals(*playlistItemWidget);
         insertedItem->setSizeHint(playlistItemWidget->minimumSizeHint());
+
+        playListMap[playListItem.id] = playlistItemWidget;
 
         setItemWidget(insertedItem, playlistItemWidget);
         rowIndex++;
@@ -77,9 +79,9 @@ void PlayListWidget::removeSelectedItems()
     std::sort(itemIndicesToBeRemoved.begin(), itemIndicesToBeRemoved.end(), std::greater<>());
     for(int i:itemIndicesToBeRemoved) {
         QListWidgetItem* currentItem = item(i);
-        //removeItemWidget(currentItem);
         model()->removeRow(i);
         PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
+        playListMap.remove(playListItemWidget->getData().id);
         delete playListItemWidget;
     }
     updateItemNumbers();
@@ -99,12 +101,15 @@ void PlayListWidget::onPlay() {
         return;
 }
 
-void PlayListWidget::onPlay(const QUuid playListItemId) {
+void PlayListWidget::onPlay(const PlayListItem playListItem) {
     const std::lock_guard<std::mutex> locker(listItemsLock);
-    if(playListMap.contains(playListItemId)) {
-        PlayListItemWidget* playListItemWidget = playListMap[playListItemId];
-        playListItemWidget->setStatus(PlayingStatus::Playing);
-    }
+    if(currentItem != nullptr)
+        currentItem->setStatus(PlayingStatus::Stopped);
+
+    currentItem = playListMap[playListItem.id];
+
+    if(currentItem != nullptr)
+        currentItem->setStatus(PlayingStatus::Playing);
 }
 
 void PlayListWidget::onPause() {
@@ -125,11 +130,29 @@ void PlayListWidget::onStop() {
 void PlayListWidget::onNextSong() {
     if(currentItem == nullptr)
         return;
+    size_t itemNumber = currentItem->getItemNumber();
+    if(itemNumber > count() - 2)
+        return;
+    QListWidgetItem *nextWidgetItem = item(itemNumber+1);
+
+    scrollToItemIfNeeded(nextWidgetItem);
+
+    PlayListItemWidget *nextPlayListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(nextWidgetItem));
+    emit play(nextPlayListItemWidget->getData());
 }
 
 void PlayListWidget::onPreviousSong() {
     if(currentItem == nullptr)
         return;
+    size_t itemNumber = currentItem->getItemNumber();
+    if(itemNumber < 1)
+        return;
+    QListWidgetItem *previousWidgetItem = item(itemNumber-1);
+
+    scrollToItemIfNeeded(previousWidgetItem);
+
+    PlayListItemWidget *previousPlayListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(previousWidgetItem));
+    emit play(previousPlayListItemWidget->getData());
 }
 
 void PlayListWidget::onClear()
@@ -198,11 +221,23 @@ void PlayListWidget::paintEvent(QPaintEvent * event)
     }
 }
 
+void PlayListWidget::scrollToItemIfNeeded(QListWidgetItem *listWidgetItem)
+{
+    QRect itemRect = visualItemRect(listWidgetItem);
+    QRect rect = contentsRect();
+
+    if(itemRect.top() < rect.top())
+        scrollToItem(listWidgetItem, PositionAtTop);
+    else if(itemRect.bottom() > rect.bottom())
+        scrollToItem(listWidgetItem, PositionAtBottom);
+}
+
 void PlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
 {
     PlayListItemWidget * widget = dynamic_cast<PlayListItemWidget*>(itemWidget(item));
+    PlayListItem playListItem = widget->getData();
     emit play(widget->getData());
-    //qDebug()<<"Item double clicked " << widget->getFilePath().c_str();
+    qDebug()<<"Item double clicked " << widget->getFilePath().c_str();
 }
 
 QPointF PlayListWidget::getDropIndicatorPosition(const QPointF &mousePosition)

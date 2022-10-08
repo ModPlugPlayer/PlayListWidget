@@ -22,6 +22,7 @@ PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & pl
     QWidget(parent),
     ui(new Ui::PlayListItemWidget) {
     init();
+    setId(playListItem.id);
     setItemNumber(playListItem.itemNumber);
     setFormat(playListItem.format);
     setTitle(playListItem.title);
@@ -40,6 +41,14 @@ PlayListItem PlayListItemWidget::getData() const {
 
 void PlayListItemWidget::setData(const PlayListItem & playListItem) {
     data = playListItem;
+}
+
+QUuid PlayListItemWidget::getId() const {
+    return data.id;
+}
+
+void PlayListItemWidget::setId(const QUuid &id) {
+    data.id = id;
 }
 
 size_t PlayListItemWidget::getItemNumber() const {

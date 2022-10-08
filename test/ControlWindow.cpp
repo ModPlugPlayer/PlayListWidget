@@ -7,9 +7,8 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui(new Ui::ControlWindow)
 {
     ui->setupUi(this);
-    this->playListWindow = new PlayListWindow(this);
+    this->playListWindow = new PlayListWindow(this, this);
     QObject::connect(this->playListWindow, &PlayListWindow::hidden, this, &ControlWindow::onPlayListEditorIsHidden);
-    //QObject::connect(this->playListWindow, &PlayListWindow::hidden, this, &ControlWindow::onPlayListEditorIsHidden);
     ui->playlistButton->click();
 }
 
@@ -60,6 +59,8 @@ void ControlWindow::onOpen(std::filesystem::path filePath)
 void ControlWindow::onOpen(PlayListItem playListItem)
 {
     playingMode = PlayingMode::PlayList;
+    ui->display->setText(playListItem.filePath.filename().c_str());
+    emit open(playListItem);
 }
 
 void ControlWindow::onStop()

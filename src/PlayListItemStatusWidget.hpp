@@ -43,7 +43,7 @@ private:
         Ui::PlayListItemStatusWidget *ui;
         PlayingStatus status = PlayingStatus::Stopped;
 protected:
-        SVGIcon *iconPlay, *iconPause, *iconStop,
+        static SVGIcon *iconPlay, *iconPause, *iconStop,
                 *iconRewind, *iconFastForward, *iconPrevious, *iconNext;
         std::vector<QPushButton *> buttons;
         std::vector<SVGIcon *> icons;

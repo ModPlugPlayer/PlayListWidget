@@ -31,32 +31,33 @@ signals:
     void resume() override;
     void previous() override;
     void next() override;
-    void changeVolume(int volume) override;
-    void changeRepeat(ModPlugPlayer::RepeatState repeat) override;
-    void setAlwaysOnTop(bool alwaysOnTop) override;
-    void hideTitleBar(bool hide) override;
-    void snapToViewPort(bool toBeSnappedToViewPort) override;
-    void keepStayingInViewPort(bool toBeKeptStayingInViewPort) override;
-    void open(std::filesystem::path filePath) override;
-    void scrubTime(int position) override;
+    void changeVolume(const int volume) override;
+    void changeRepeat(const ModPlugPlayer::RepeatState repeat) override;
+    void setAlwaysOnTop(const bool alwaysOnTop) override;
+    void hideTitleBar(const bool hide) override;
+    void snapToViewPort(const bool toBeSnappedToViewPort) override;
+    void keepStayingInViewPort(const bool toBeKeptStayingInViewPort) override;
+    void open(const std::filesystem::path filePath) override;
+    void open(const ModPlugPlayer::PlayListItem playListItem) override;
+    void scrubTime(const int position) override;
 
 public slots:
-    void onOpen(std::filesystem::path filePath) override;
-    void onOpen(PlayListItem playListItem) override;
+    void onOpen(const std::filesystem::path filePath) override;
+    void onOpen(const ModPlugPlayer::PlayListItem playListItem) override;
     void onStop() override;
     void onPlay() override;
     void onPause() override;
     void onResume() override;
     void onPrevious() override;
     void onNext() override;
-    void onChangeVolume(int volume) override;
-    void onScrubTime(int position) override;
-    void onChangeRepeat(ModPlugPlayer::RepeatState repeat) override;
-    void onSetAlwaysOnTop(bool alwaysOnTop) override;
-    void onHideTitleBar(bool hide) override;
-    void onSetSnapToViewPort(bool snapToViewPort) override;
-    void onSetKeepStayingInViewPort(bool keepStayingInViewPort) override;
-    void onSetSnappingThreshold(int snappingThreshold) override;
+    void onChangeVolume(const int volume) override;
+    void onScrubTime(const int position) override;
+    void onChangeRepeat(const ModPlugPlayer::RepeatState repeat) override;
+    void onSetAlwaysOnTop(const bool alwaysOnTop) override;
+    void onHideTitleBar(const bool hide) override;
+    void onSetSnapToViewPort(const bool snapToViewPort) override;
+    void onSetKeepStayingInViewPort(const bool keepStayingInViewPort) override;
+    void onSetSnappingThreshold(const int snappingThreshold) override;
 
 private slots:
     void on_previousButton_clicked();
