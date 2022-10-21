@@ -26,9 +26,13 @@ public:
 
 signals:
     void stop() override;
+    void stop(const ModPlugPlayer::PlayListItem playListItem) override;
     void play() override;
+    void play(const ModPlugPlayer::PlayListItem playListItem) override;
     void pause() override;
+    void pause(const ModPlugPlayer::PlayListItem playListItem) override;
     void resume() override;
+    void resume(const ModPlugPlayer::PlayListItem playListItem) override;
     void previous() override;
     void next() override;
     void changeVolume(const int volume) override;
@@ -45,9 +49,13 @@ public slots:
     void onOpen(const std::filesystem::path filePath) override;
     void onOpen(const ModPlugPlayer::PlayListItem playListItem) override;
     void onStop() override;
+    void onStop(const ModPlugPlayer::PlayListItem playListItem) override;
     void onPlay() override;
+    void onPlay(const ModPlugPlayer::PlayListItem playListItem) override;
     void onPause() override;
+    void onPause(const ModPlugPlayer::PlayListItem playListItem) override;
     void onResume() override;
+    void onResume(const ModPlugPlayer::PlayListItem playListItem) override;
     void onPrevious() override;
     void onNext() override;
     void onChangeVolume(const int volume) override;

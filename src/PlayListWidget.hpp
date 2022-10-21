@@ -37,28 +37,30 @@ class PlayListWidget : public QListWidget, public PlayList {
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
+        void requestMetaData(const ModPlugPlayer::PlayListItem playListItem) override;
+        void open(const ModPlugPlayer::PlayListItem playListItem) override;
         void play(const ModPlugPlayer::PlayListItem playListItem) override;
-        void pause() override;
-        void resume() override;
-        void stop() override;
-        void next() override;
-        void previous() override;
-        void clear() override;
+        void pause(const ModPlugPlayer::PlayListItem playListItem) override;
+        void resume(const ModPlugPlayer::PlayListItem playListItem) override;
+        void stop(const ModPlugPlayer::PlayListItem playListItem) override;
+        void repeat(const ModPlugPlayer::RepeatState repeatState) override;
 
     public slots:
-        void onPlay() override;
+        void onMetaData(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onOpen(const ModPlugPlayer::PlayListItem playListItem) override;
         void onPlay(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onPause() override;
-        void onResume() override;
-        void onStop() override;
+        void onPause(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onResume(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onStop(const ModPlugPlayer::PlayListItem playListItem) override;
         void onNextSong() override;
         void onPreviousSong() override;
         void onClear() override;
+        void onRepeat(const ModPlugPlayer::RepeatState repeatState) override;
 
     private slots:
         void onItemDoubleClicked(QListWidgetItem *item);
 
-     protected:
+    protected:
         void dragEnterEvent(QDragEnterEvent *event) override;
         void dragLeaveEvent(QDragLeaveEvent *event) override;
         void dropEvent(QDropEvent *e) override;
@@ -81,4 +83,5 @@ class PlayListWidget : public QListWidget, public PlayList {
         std::mutex listItemsLock;
         QMap<QUuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
+        RepeatState repeatState = RepeatState::None;
 };

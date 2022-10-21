@@ -96,9 +96,12 @@ PlayListItem PlayListWidget::getCurrentItem()
     return playListItem;
 }
 
-void PlayListWidget::onPlay() {
-    if(currentItem == nullptr)
-        return;
+void PlayListWidget::onMetaData(const PlayListItem playListItem) {
+
+}
+
+void PlayListWidget::onOpen(const PlayListItem playListItem) {
+
 }
 
 void PlayListWidget::onPlay(const PlayListItem playListItem) {
@@ -112,17 +115,17 @@ void PlayListWidget::onPlay(const PlayListItem playListItem) {
         currentItem->setStatus(PlayingStatus::Playing);
 }
 
-void PlayListWidget::onPause() {
+void PlayListWidget::onPause(const PlayListItem playListItem) {
     if(currentItem == nullptr)
         return;
 }
 
-void PlayListWidget::onResume() {
+void PlayListWidget::onResume(const PlayListItem playListItem) {
     if(currentItem == nullptr)
         return;
 }
 
-void PlayListWidget::onStop() {
+void PlayListWidget::onStop(const PlayListItem playListItem) {
     if(currentItem == nullptr)
         return;
 }
@@ -131,9 +134,19 @@ void PlayListWidget::onNextSong() {
     if(currentItem == nullptr)
         return;
     size_t itemNumber = currentItem->getItemNumber();
-    if(itemNumber > count() - 2)
+    size_t itemAmount = (size_t) count();
+    if(itemAmount < 2)
         return;
-    QListWidgetItem *nextWidgetItem = item(itemNumber+1);
+    QListWidgetItem *nextWidgetItem;
+
+    if(itemNumber > itemAmount - 2) {
+        if(repeatState != RepeatState::PlayList)
+            return;
+        nextWidgetItem = item(0);
+    }
+    else {
+        nextWidgetItem = item(itemNumber+1);
+    }
 
     scrollToItemIfNeeded(nextWidgetItem);
 
@@ -145,9 +158,18 @@ void PlayListWidget::onPreviousSong() {
     if(currentItem == nullptr)
         return;
     size_t itemNumber = currentItem->getItemNumber();
-    if(itemNumber < 1)
-        return;
-    QListWidgetItem *previousWidgetItem = item(itemNumber-1);
+    size_t itemAmount = (size_t) count();
+
+    QListWidgetItem *previousWidgetItem;
+
+    if(itemNumber < 1) {
+        if(repeatState != RepeatState::PlayList)
+            return;
+        previousWidgetItem = item(itemAmount-1);
+    }
+    else {
+        previousWidgetItem = item(itemNumber-1);
+    }
 
     scrollToItemIfNeeded(previousWidgetItem);
 
@@ -158,6 +180,11 @@ void PlayListWidget::onPreviousSong() {
 void PlayListWidget::onClear()
 {
     QListWidget::clear();
+}
+
+void PlayListWidget::onRepeat(const RepeatState repeatState)
+{
+    this->repeatState = repeatState;
 }
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)

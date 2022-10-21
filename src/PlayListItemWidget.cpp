@@ -111,6 +111,14 @@ void PlayListItemWidget::onPlayClickFromStatusWidget() {
     emit play(data);
 }
 
+void PlayListItemWidget::onPauseClickFromStatusWidget() {
+    emit pause(data);
+}
+
+void PlayListItemWidget::onResumeClickFromStatusWidget() {
+    emit resume(data);
+}
+
 void PlayListItemWidget::init() {
     ui->setupUi(this);
     setMouseTracking(true);
@@ -119,15 +127,15 @@ void PlayListItemWidget::init() {
 }
 
 void PlayListItemWidget::connectSignals() {
-    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
-    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
     QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
+    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::onPauseClickFromStatusWidget);
+    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::onResumeClickFromStatusWidget);
 }
 
 void PlayListItemWidget::disconnectSignals() {
-    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::pause);
-    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::resume);
     QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
+    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::onPauseClickFromStatusWidget);
+    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::onResumeClickFromStatusWidget);
 }
 
 void PlayListItemWidget::enterEvent(QEnterEvent *event) {

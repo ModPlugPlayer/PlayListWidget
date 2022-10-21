@@ -51,13 +51,11 @@ bool ControlWindow::isKeptStayingInViewPort() const
     return false;
 }
 
-void ControlWindow::onOpen(std::filesystem::path filePath)
-{
+void ControlWindow::onOpen(std::filesystem::path filePath) {
     playingMode = PlayingMode::SingleTrack;
 }
 
-void ControlWindow::onOpen(PlayListItem playListItem)
-{
+void ControlWindow::onOpen(PlayListItem playListItem) {
     playingMode = PlayingMode::PlayList;
     ui->display->setText(playListItem.filePath.filename().c_str());
     emit open(playListItem);
@@ -68,58 +66,66 @@ void ControlWindow::onStop()
     emit stop();
 }
 
+void ControlWindow::onStop(const PlayListItem playListItem)
+{
+
+}
+
 void ControlWindow::onPlay()
 {
     emit play();
 }
 
-void ControlWindow::onPause()
+void ControlWindow::onPlay(const PlayListItem playListItem)
 {
+
+}
+
+void ControlWindow::onPause() {
     emit pause();
 }
 
-void ControlWindow::onResume()
-{
+void ControlWindow::onPause(const PlayListItem playListItem) {
+
+}
+
+void ControlWindow::onResume() {
     emit resume();
 }
 
-void ControlWindow::onPrevious()
-{
+void ControlWindow::onResume(const PlayListItem playListItem) {
+
+}
+
+void ControlWindow::onPrevious() {
     emit previous();
 }
 
-void ControlWindow::onNext()
-{
+void ControlWindow::onNext() {
     emit next();
 }
 
-void ControlWindow::onChangeVolume(int volume)
-{
+void ControlWindow::onChangeVolume(int volume) {
 
 }
 
-void ControlWindow::onScrubTime(int position)
-{
+void ControlWindow::onScrubTime(int position) {
 
 }
 
-void ControlWindow::onChangeRepeat(RepeatState repeat)
-{
+void ControlWindow::onChangeRepeat(RepeatState repeat) {
 
 }
 
-void ControlWindow::onSetAlwaysOnTop(bool alwaysOnTop)
-{
+void ControlWindow::onSetAlwaysOnTop(bool alwaysOnTop) {
 
 }
 
-void ControlWindow::onHideTitleBar(bool hide)
-{
+void ControlWindow::onHideTitleBar(bool hide) {
 
 }
 
-void ControlWindow::onSetSnapToViewPort(bool snapToViewPort)
-{
+void ControlWindow::onSetSnapToViewPort(bool snapToViewPort) {
 
 }
 
