@@ -79,9 +79,9 @@ void PlayListWidget::removeSelectedItems()
     std::sort(itemIndicesToBeRemoved.begin(), itemIndicesToBeRemoved.end(), std::greater<>());
     for(int i:itemIndicesToBeRemoved) {
         QListWidgetItem* currentItem = item(i);
-        model()->removeRow(i);
         PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
         playListMap.remove(playListItemWidget->getData().id);
+        model()->removeRow(i);
         delete playListItemWidget;
     }
     updateItemNumbers();
@@ -295,7 +295,7 @@ int PlayListWidget::getDroppingItemDestinationIndex(const QPointF &mousePosition
     if(isDropIndicatorOnTopOrBottom(itemRect, mousePosition))
         index = overIndex;
     else
-            index = overIndex+1;
+        index = overIndex+1;
     return index;
 }
 
