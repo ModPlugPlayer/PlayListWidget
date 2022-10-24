@@ -13,6 +13,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QPainter>
 #include "PlayListWidget.hpp"
 #include "PlayListItemWidget.hpp"
+#include "PlayListStyleSheets.hpp"
 
 PlayListWidget::PlayListWidget(QWidget *parent)
     : QListWidget(parent)
@@ -20,6 +21,7 @@ PlayListWidget::PlayListWidget(QWidget *parent)
     setAcceptDrops(true);
     QListWidget::setDropIndicatorShown(false);
     QObject::connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
+    verticalScrollBar()->setStyleSheet(PlayListStyleSheets::scrollBar);
 }
 
 void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowIndex)
