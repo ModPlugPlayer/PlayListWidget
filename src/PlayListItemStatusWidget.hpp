@@ -15,6 +15,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <SVGIcon.hpp>
 #include <QPushButton>
 #include <APIStructures.hpp>
+#include <LEDColorProperties.hpp>
 
 namespace Ui {
 class PlayListItemStatusWidget;
@@ -22,8 +23,7 @@ class PlayListItemStatusWidget;
 
 using namespace ModPlugPlayer;
 
-class PlayListItemStatusWidget : public QWidget
-{
+class PlayListItemStatusWidget : public QWidget,  public LEDColorProperties {
     Q_OBJECT
     public:
         void setItemNumber(size_t itemNumber);
@@ -43,9 +43,11 @@ private:
         Ui::PlayListItemStatusWidget *ui;
         PlayingStatus status = PlayingStatus::Stopped;
 protected:
-        static SVGIcon *iconPlay, *iconPause, *iconStop,
+        SVGIcon *iconPlay, *iconPause, *iconStop,
                 *iconRewind, *iconFastForward, *iconPrevious, *iconNext;
-        std::vector<QPushButton *> buttons;
         std::vector<SVGIcon *> icons;
+
+        RGB activeButtonLightColor, inactiveButtonLightColor;
+        void refreshStyleSheet() override;
 };
 

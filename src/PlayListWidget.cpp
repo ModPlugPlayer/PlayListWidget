@@ -118,18 +118,25 @@ void PlayListWidget::onPlay(const PlayListItem playListItem) {
 }
 
 void PlayListWidget::onPause(const PlayListItem playListItem) {
-    if(currentItem == nullptr)
+    if(!playListMap.contains(playListItem.id))
         return;
+    PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
+    playListItemWidget->setStatus(PlayingStatus::Paused);
+
 }
 
 void PlayListWidget::onResume(const PlayListItem playListItem) {
-    if(currentItem == nullptr)
+    if(!playListMap.contains(playListItem.id))
         return;
+    PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
+    playListItemWidget->setStatus(PlayingStatus::Playing);
 }
 
 void PlayListWidget::onStop(const PlayListItem playListItem) {
-    if(currentItem == nullptr)
+    if(!playListMap.contains(playListItem.id))
         return;
+    PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
+    playListItemWidget->setStatus(PlayingStatus::Stopped);
 }
 
 void PlayListWidget::onNextSong() {
@@ -149,6 +156,8 @@ void PlayListWidget::onNextSong() {
     else {
         nextWidgetItem = item(itemNumber+1);
     }
+
+    currentItem->setStatus(PlayingStatus::Stopped);
 
     scrollToItemIfNeeded(nextWidgetItem);
 
@@ -172,6 +181,8 @@ void PlayListWidget::onPreviousSong() {
     else {
         previousWidgetItem = item(itemNumber-1);
     }
+
+    currentItem->setStatus(PlayingStatus::Stopped);
 
     scrollToItemIfNeeded(previousWidgetItem);
 

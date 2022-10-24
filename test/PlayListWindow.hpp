@@ -33,22 +33,15 @@ class PlayListWindow : public QMainWindow {
     public slots:
         void onFileDropped(QUrl fileUrl, int droppedIndex);
         void onFilesDropped(QList<QUrl> fileUrls, int droppedIndex);
-        void onNext();
-        void onPrevious();
-        void onStop();
-        void onPlay();
-        void onPause();
-
     private slots:
         void on_Add_clicked();
         void on_Remove_clicked();
 
     private:
-    Ui::PlayListWindow *ui;
-    void closeEvent(QCloseEvent *event);
-    void showEvent(QShowEvent *event);
-    void hideEvent(QHideEvent *event);
-    QRect windowGeometry;
-    Player *playerWindow;
-
+        Ui::PlayListWindow *ui;
+        void closeEvent(QCloseEvent *event);
+        void showEvent(QShowEvent *event);
+        void hideEvent(QHideEvent *event);
+        QRect windowGeometry;
+        Player *playerWindow;
 };
