@@ -77,8 +77,8 @@ class PlayListWidget : public QListWidget, public PlayList {
          */
         void updateItemNumbers();
         bool isValidDrop(const QPointF &dropPosition);
-        void connectSignals(PlayListItemWidget &playListItemWidget);
-        void disconnectSignals(PlayListItemWidget &playListItemWidget);
+        void connectPlayListItemSignals(PlayListItemWidget &playListItemWidget);
+        void disconnectPlayListItemSignals(PlayListItemWidget &playListItemWidget);
         PlayListItemWidget *currentItem = nullptr;
         std::mutex listItemsLock;
         QMap<QUuid, PlayListItemWidget *> playListMap;

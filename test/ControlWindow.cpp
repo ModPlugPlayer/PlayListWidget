@@ -9,6 +9,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui->setupUi(this);
     this->playListWindow = new PlayListWindow(this, this);
     QObject::connect(this->playListWindow, &PlayListWindow::hidden, this, &ControlWindow::onPlayListEditorIsHidden);
+    QObject::connect(this, &ControlWindow::changeRepeat, this, &ControlWindow::onChangeRepeat);
     ui->playlistButton->click();
 }
 
@@ -114,7 +115,7 @@ void ControlWindow::onScrubTime(int position) {
 }
 
 void ControlWindow::onChangeRepeat(RepeatState repeat) {
-
+    repeatState = repeat;
 }
 
 void ControlWindow::onSetAlwaysOnTop(bool alwaysOnTop) {
@@ -199,14 +200,16 @@ void ControlWindow::onPlayListEditorIsHidden()
 
 void ControlWindow::toggleRepeat()
 {
+    RepeatState repeat = RepeatState::None;
+
     if(repeatState == RepeatState::None)
-        repeatState = RepeatState::SingleTrack;
+        repeat = RepeatState::SingleTrack;
     else
         if(repeatState == RepeatState::SingleTrack)
-            repeatState = RepeatState::PlayList;
+            repeat = RepeatState::PlayList;
     else
         if(repeatState == RepeatState::PlayList)
-            repeatState = RepeatState::None;
+            repeat = RepeatState::None;
 
-    emit changeRepeat(repeatState);
+    emit changeRepeat(repeat);
 }
