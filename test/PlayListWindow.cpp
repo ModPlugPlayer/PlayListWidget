@@ -22,6 +22,7 @@ PlayListWindow::PlayListWindow(QWidget *parent, Player *playerWindow)
     this->playerWindow = playerWindow;
     connect(ui->listWidget, &PlayListWidget::fileDropped, this, &PlayListWindow::onFileDropped);
     connect(ui->listWidget, &PlayListWidget::filesDropped, this, &PlayListWindow::onFilesDropped);
+    connect(ui->ClearList, &QPushButton::clicked, ui->listWidget, &PlayListWidget::clear);
     QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::previous, ui->listWidget, &PlayListWidget::onPreviousSong);
     QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::next, ui->listWidget, &PlayListWidget::onNextSong);
     QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::changeRepeat, ui->listWidget, &PlayListWidget::onRepeat);

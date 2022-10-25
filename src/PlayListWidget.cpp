@@ -21,6 +21,7 @@ PlayListWidget::PlayListWidget(QWidget *parent)
     setAcceptDrops(true);
     QListWidget::setDropIndicatorShown(false);
     QObject::connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
+    QObject::connect(this, &PlayListWidget::clear, this, &PlayListWidget::onClear);
     verticalScrollBar()->setStyleSheet(PlayListStyleSheets::scrollBar);
 }
 
@@ -192,7 +193,17 @@ void PlayListWidget::onPreviousSong() {
 
 void PlayListWidget::onClear()
 {
+    const std::lock_guard<std::mutex> locker(listItemsLock);
+    QList<PlayListItemWidget *> allItems = playListMap.values();
+    if(allItems.isEmpty())
+        return;
+
+    for(PlayListItemWidget* currentItem:allItems) {
+        disconnectPlayListItemSignals(*currentItem);
+    }
+
     QListWidget::clear();
+    playListMap.clear();
 }
 
 void PlayListWidget::onRepeat(const RepeatState repeatState)
