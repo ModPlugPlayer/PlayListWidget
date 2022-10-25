@@ -72,16 +72,18 @@ private slots:
     void on_nextButton_clicked();
     void on_playButton_clicked();
     void on_pauseButton_clicked();
-    void on_resumeButton_clicked();
     void on_stopButton_clicked();
     void on_repeatButton_clicked();
-    void on_playlistButton_toggled(bool checked);
+    void on_playlistButton_clicked();
     void onPlayListEditorIsHidden();
+
+    void on_openButton_clicked();
 
 private:
     Ui::ControlWindow *ui;
     PlayListWindow * playListWindow;
     RepeatState repeatState = RepeatState::None;
+    PlayingStatus playingStatus = PlayingStatus::Stopped;
     void toggleRepeat();
     PlayingMode playingMode = PlayingMode::SingleTrack;
 };
