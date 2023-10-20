@@ -22,7 +22,7 @@ PlayListWidget::PlayListWidget(QWidget *parent)
     QListWidget::setDropIndicatorShown(false);
     QObject::connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
     QObject::connect(this, &PlayListWidget::clear, this, &PlayListWidget::onClear);
-    verticalScrollBar()->setStyleSheet(PlayListStyleSheets::scrollBar);
+    //verticalScrollBar()->setStyleSheet(PlayListStyleSheets::scrollBar);
 }
 
 void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowIndex)
