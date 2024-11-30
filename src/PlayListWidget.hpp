@@ -22,6 +22,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include "PlayList.hpp"
 #include "PlayListItemWidget.hpp"
 #include <QMap>
+#include <boost/uuid/uuid.hpp>
 #include <mutex>
 
 class PlayListWidget : public QListWidget, public PlayList {
@@ -81,7 +82,7 @@ class PlayListWidget : public QListWidget, public PlayList {
         void disconnectPlayListItemSignals(PlayListItemWidget &playListItemWidget);
         PlayListItemWidget *currentItem = nullptr;
         std::mutex listItemsLock;
-        QMap<QUuid, PlayListItemWidget *> playListMap;
+        QMap<boost::uuids::uuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
         RepeatState repeatState = RepeatState::None;
 };

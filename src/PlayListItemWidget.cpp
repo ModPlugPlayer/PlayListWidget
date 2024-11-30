@@ -43,11 +43,11 @@ void PlayListItemWidget::setData(const PlayListItem & playListItem) {
     data = playListItem;
 }
 
-QUuid PlayListItemWidget::getId() const {
+boost::uuids::uuid PlayListItemWidget::getId() const {
     return data.id;
 }
 
-void PlayListItemWidget::setId(const QUuid &id) {
+void PlayListItemWidget::setId(const boost::uuids::uuid &id) {
     data.id = id;
 }
 

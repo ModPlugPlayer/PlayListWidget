@@ -26,8 +26,8 @@ PlayListWindow::PlayListWindow(QWidget *parent, Player *playerWindow)
     QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::previous, ui->listWidget, &PlayListWidget::onPreviousSong);
     QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::next, ui->listWidget, &PlayListWidget::onNextSong);
     QObject::connect((ControlWindow *)this->playerWindow, &ControlWindow::changeRepeat, ui->listWidget, &PlayListWidget::onRepeat);
-    QObject::connect(ui->listWidget, qOverload<ModPlugPlayer::PlayListItem>(&PlayListWidget::play), (ControlWindow *)this->playerWindow, qOverload<ModPlugPlayer::PlayListItem>(&ControlWindow::onOpen));
-    QObject::connect((ControlWindow *)this->playerWindow, qOverload<ModPlugPlayer::PlayListItem>(&ControlWindow::open), ui->listWidget, qOverload<ModPlugPlayer::PlayListItem>(&PlayListWidget::onPlay));
+    QObject::connect(ui->listWidget, qOverload<ModPlugPlayer::PlayListItem>(&PlayListWidget::play), (ControlWindow *)this->playerWindow, qOverload<ModPlugPlayer::PlayListItem>(&ControlWindow::onPlay));
+    QObject::connect((ControlWindow *)this->playerWindow, qOverload<ModPlugPlayer::PlayListItem>(&ControlWindow::open), ui->listWidget, qOverload<ModPlugPlayer::PlayListItem>(&PlayListWidget::onOpen));
     //connect((QWidget *) playerWindow, &ControlWindow::next, this, &PlayListWindow::onPlayNext);
     ui->listWidget->setDragDropMode(QAbstractItemView::InternalMove);
     windowGeometry = geometry();

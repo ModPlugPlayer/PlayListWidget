@@ -34,8 +34,8 @@ class PlayListItemWidget : public QWidget
         PlayListItem getData() const;
         void setData(const PlayListItem &playListItem);
 
-        QUuid getId() const;
-        void setId(const QUuid &id);
+        boost::uuids::uuid getId() const;
+        void setId(const boost::uuids::uuid &id);
 
         size_t getItemNumber() const;
         void setItemNumber(size_t itemNumber);
