@@ -44,7 +44,7 @@ class PlayListWidget : public QListWidget, public PlayList {
         void pause(const ModPlugPlayer::PlayListItem playListItem) override;
         void resume(const ModPlugPlayer::PlayListItem playListItem) override;
         void stop(const ModPlugPlayer::PlayListItem playListItem) override;
-        void repeat(const ModPlugPlayer::RepeatState repeatState) override;
+        void repeat(const ModPlugPlayer::RepeatMode repeatMode) override;
 
     public slots:
         void onMetaData(const ModPlugPlayer::PlayListItem playListItem) override;
@@ -56,7 +56,7 @@ class PlayListWidget : public QListWidget, public PlayList {
         void onNextSong() override;
         void onPreviousSong() override;
         void onClear() override;
-        void onRepeat(const ModPlugPlayer::RepeatState repeatState) override;
+        void onRepeat(const ModPlugPlayer::RepeatMode repeatMode) override;
 
     private slots:
         void onItemDoubleClicked(QListWidgetItem *item);
@@ -84,5 +84,5 @@ class PlayListWidget : public QListWidget, public PlayList {
         std::mutex listItemsLock;
         QMap<boost::uuids::uuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
-        RepeatState repeatState = RepeatState::None;
+        RepeatMode repeatMode = RepeatMode::None;
 };

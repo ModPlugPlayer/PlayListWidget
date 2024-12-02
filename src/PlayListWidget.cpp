@@ -150,7 +150,7 @@ void PlayListWidget::onNextSong() {
     QListWidgetItem *nextWidgetItem;
 
     if(itemNumber > itemAmount - 2) {
-        if(repeatState != RepeatState::PlayList)
+        if(repeatMode != RepeatMode::PlayList)
             return;
         nextWidgetItem = item(0);
     }
@@ -175,7 +175,7 @@ void PlayListWidget::onPreviousSong() {
     QListWidgetItem *previousWidgetItem;
 
     if(itemNumber < 1) {
-        if(repeatState != RepeatState::PlayList)
+        if(repeatMode != RepeatMode::PlayList)
             return;
         previousWidgetItem = item(itemAmount-1);
     }
@@ -206,9 +206,9 @@ void PlayListWidget::onClear()
     playListMap.clear();
 }
 
-void PlayListWidget::onRepeat(const RepeatState repeatState)
+void PlayListWidget::onRepeat(const RepeatMode repeatMode)
 {
-    this->repeatState = repeatState;
+    this->repeatMode = repeatMode;
 }
 
 void PlayListWidget::dragEnterEvent(QDragEnterEvent * event)
