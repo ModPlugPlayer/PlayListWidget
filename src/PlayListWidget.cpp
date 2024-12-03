@@ -150,7 +150,7 @@ void PlayListWidget::onNextSong() {
     QListWidgetItem *nextWidgetItem;
 
     if(itemNumber > itemAmount - 2) {
-        if(repeatMode != RepeatMode::PlayList)
+        if(repeatMode != RepeatMode::RepeatPlayList)
             return;
         nextWidgetItem = item(0);
     }
@@ -175,7 +175,7 @@ void PlayListWidget::onPreviousSong() {
     QListWidgetItem *previousWidgetItem;
 
     if(itemNumber < 1) {
-        if(repeatMode != RepeatMode::PlayList)
+        if(repeatMode != RepeatMode::RepeatPlayList)
             return;
         previousWidgetItem = item(itemAmount-1);
     }

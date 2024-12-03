@@ -84,5 +84,5 @@ class PlayListWidget : public QListWidget, public PlayList {
         std::mutex listItemsLock;
         QMap<boost::uuids::uuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
-        RepeatMode repeatMode = RepeatMode::None;
+        RepeatMode repeatMode = RepeatMode::NoRepeat;
 };
