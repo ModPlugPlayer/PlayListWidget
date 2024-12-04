@@ -34,9 +34,9 @@ class PlayListItemStatusWidget : public QWidget,  public LEDColorProperties {
         void showOnlyPlayPauseButton();
         ~PlayListItemStatusWidget();
 signals:
-        void play();
-        void pause();
-        void resume();
+        void playRequested();
+        void pauseRequested();
+        void resumeRequested();
 private slots:
         void onClick();
 private:

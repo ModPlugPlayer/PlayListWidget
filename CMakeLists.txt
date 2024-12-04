@@ -20,8 +20,14 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#Boost Definitions
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Svg)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Svg)
+find_package(Boost REQUIRED)
 
 file(GLOB MODPLUGPLAYERAPI_SRC
     "../ModPlugPlayerAPI/src/*.hpp"
@@ -83,10 +89,12 @@ include_directories(src)
 include_directories(test)
 include_directories(../Common/src)
 include_directories(../ModPlugPlayerAPI/src)
+include_directories( ${Boost_INCLUDE_DIRS} )
 
 target_link_libraries(PlayListWidget PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Svg
+    ${Boost_LIBRARIES}
 )
 
 set_target_properties(PlayListWidget PROPERTIES

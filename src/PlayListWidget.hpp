@@ -38,25 +38,26 @@ class PlayListWidget : public QListWidget, public PlayList {
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
-        void requestMetaData(const ModPlugPlayer::PlayListItem playListItem) override;
-        void open(const ModPlugPlayer::PlayListItem playListItem) override;
-        void play(const ModPlugPlayer::PlayListItem playListItem) override;
-        void pause(const ModPlugPlayer::PlayListItem playListItem) override;
-        void resume(const ModPlugPlayer::PlayListItem playListItem) override;
-        void stop(const ModPlugPlayer::PlayListItem playListItem) override;
-        void repeat(const ModPlugPlayer::RepeatMode repeatMode) override;
+        void metaDataRequested(const ModPlugPlayer::PlayListItem playListItem) override;
+        void loadRequested(const ModPlugPlayer::PlayListItem playListItem) override;
+        void playRequested(const ModPlugPlayer::PlayListItem playListItem) override;
+        void pauseRequested(const ModPlugPlayer::PlayListItem playListItem) override;
+        void resumeRequested(const ModPlugPlayer::PlayListItem playListItem) override;
+        void stopRequested(const ModPlugPlayer::PlayListItem playListItem) override;
+        void repeatRequested(const ModPlugPlayer::RepeatMode repeatMode) override;
+        void clearPlayListRequested() override;
 
     public slots:
-        void onMetaData(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onOpen(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onPlay(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onPause(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onResume(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onStop(const ModPlugPlayer::PlayListItem playListItem) override;
-        void onNextSong() override;
-        void onPreviousSong() override;
-        void onClear() override;
-        void onRepeat(const ModPlugPlayer::RepeatMode repeatMode) override;
+        void onMetaDataObtained(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onLoaded(const ModPlugPlayer::PlayListItem playListItem, bool successfull) override;
+        void onPlayingStarted(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onPaused(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onResumed(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onStopped(const ModPlugPlayer::PlayListItem playListItem) override;
+        void onNextRequested() override;
+        void onPreviousRequested() override;
+        void onClearPlayListRequested() override;
+        void onRepeatModeChanged(const ModPlugPlayer::RepeatMode repeatMode) override;
 
     private slots:
         void onItemDoubleClicked(QListWidgetItem *item);

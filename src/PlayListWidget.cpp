@@ -20,8 +20,8 @@ PlayListWidget::PlayListWidget(QWidget *parent)
 {
     setAcceptDrops(true);
     QListWidget::setDropIndicatorShown(false);
-    QObject::connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
-    QObject::connect(this, &PlayListWidget::clear, this, &PlayListWidget::onClear);
+    connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
+    connect(this, &PlayListWidget::clearPlayListRequested, this, &PlayListWidget::onClearPlayListRequested);
     //verticalScrollBar()->setStyleSheet(PlayListStyleSheets::scrollBar);
 }
 
@@ -99,15 +99,15 @@ PlayListItem PlayListWidget::getCurrentItem()
     return playListItem;
 }
 
-void PlayListWidget::onMetaData(const PlayListItem playListItem) {
+void PlayListWidget::onMetaDataObtained(const PlayListItem playListItem) {
 
 }
 
-void PlayListWidget::onOpen(const PlayListItem playListItem) {
+void PlayListWidget::onLoaded(const PlayListItem playListItem, bool successfull) {
 
 }
 
-void PlayListWidget::onPlay(const PlayListItem playListItem) {
+void PlayListWidget::onPlayingStarted(const PlayListItem playListItem) {
     const std::lock_guard<std::mutex> locker(listItemsLock);
     if(currentItem != nullptr)
         currentItem->setStatus(PlayingStatus::Stopped);
@@ -118,7 +118,7 @@ void PlayListWidget::onPlay(const PlayListItem playListItem) {
         currentItem->setStatus(PlayingStatus::Playing);
 }
 
-void PlayListWidget::onPause(const PlayListItem playListItem) {
+void PlayListWidget::onPaused(const PlayListItem playListItem) {
     if(!playListMap.contains(playListItem.id))
         return;
     PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
@@ -126,21 +126,21 @@ void PlayListWidget::onPause(const PlayListItem playListItem) {
 
 }
 
-void PlayListWidget::onResume(const PlayListItem playListItem) {
+void PlayListWidget::onResumed(const PlayListItem playListItem) {
     if(!playListMap.contains(playListItem.id))
         return;
     PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
     playListItemWidget->setStatus(PlayingStatus::Playing);
 }
 
-void PlayListWidget::onStop(const PlayListItem playListItem) {
+void PlayListWidget::onStopped(const PlayListItem playListItem) {
     if(!playListMap.contains(playListItem.id))
         return;
     PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
     playListItemWidget->setStatus(PlayingStatus::Stopped);
 }
 
-void PlayListWidget::onNextSong() {
+void PlayListWidget::onNextRequested() {
     if(currentItem == nullptr)
         return;
     size_t itemNumber = currentItem->getItemNumber();
@@ -163,10 +163,10 @@ void PlayListWidget::onNextSong() {
     scrollToItemIfNeeded(nextWidgetItem);
 
     PlayListItemWidget *nextPlayListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(nextWidgetItem));
-    emit play(nextPlayListItemWidget->getData());
+    emit playRequested(nextPlayListItemWidget->getData());
 }
 
-void PlayListWidget::onPreviousSong() {
+void PlayListWidget::onPreviousRequested() {
     if(currentItem == nullptr)
         return;
     size_t itemNumber = currentItem->getItemNumber();
@@ -188,11 +188,10 @@ void PlayListWidget::onPreviousSong() {
     scrollToItemIfNeeded(previousWidgetItem);
 
     PlayListItemWidget *previousPlayListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(previousWidgetItem));
-    emit play(previousPlayListItemWidget->getData());
+    emit playRequested(previousPlayListItemWidget->getData());
 }
 
-void PlayListWidget::onClear()
-{
+void PlayListWidget::onClearPlayListRequested() {
     const std::lock_guard<std::mutex> locker(listItemsLock);
     QList<PlayListItemWidget *> allItems = playListMap.values();
     if(allItems.isEmpty())
@@ -206,7 +205,7 @@ void PlayListWidget::onClear()
     playListMap.clear();
 }
 
-void PlayListWidget::onRepeat(const RepeatMode repeatMode)
+void PlayListWidget::onRepeatModeChanged(const RepeatMode repeatMode)
 {
     this->repeatMode = repeatMode;
 }
@@ -287,7 +286,7 @@ void PlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
 {
     PlayListItemWidget * widget = dynamic_cast<PlayListItemWidget*>(itemWidget(item));
     PlayListItem playListItem = widget->getData();
-    emit play(widget->getData());
+    emit playRequested(widget->getData());
     qDebug()<<"Item double clicked " << widget->getFilePath().c_str();
 }
 
@@ -392,14 +391,14 @@ bool PlayListWidget::isValidDrop(const QPointF &dropPosition)
 }
 
 void PlayListWidget::connectPlayListItemSignals(PlayListItemWidget &playListItemWidget) {
-    QObject::connect(&playListItemWidget, &PlayListItemWidget::pause, this, &PlayListWidget::pause);
-    QObject::connect(&playListItemWidget, &PlayListItemWidget::resume, this, &PlayListWidget::resume);
-    QObject::connect(&playListItemWidget, &PlayListItemWidget::play, this, &PlayListWidget::play);
+    QObject::connect(&playListItemWidget, &PlayListItemWidget::pauseRequested, this, &PlayListWidget::pauseRequested);
+    QObject::connect(&playListItemWidget, &PlayListItemWidget::resumeRequested, this, &PlayListWidget::resumeRequested);
+    QObject::connect(&playListItemWidget, &PlayListItemWidget::playRequested, this, &PlayListWidget::playRequested);
 
 }
 
 void PlayListWidget::disconnectPlayListItemSignals(PlayListItemWidget &playListItemWidget) {
-    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::pause, this, &PlayListWidget::pause);
-    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::resume, this, &PlayListWidget::resume);
-    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::play, this, &PlayListWidget::play);
+    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::pauseRequested, this, &PlayListWidget::pauseRequested);
+    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::resumeRequested, this, &PlayListWidget::resumeRequested);
+    QObject::disconnect(&playListItemWidget, &PlayListItemWidget::playRequested, this, &PlayListWidget::playRequested);
 }

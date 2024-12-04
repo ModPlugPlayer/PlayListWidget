@@ -108,15 +108,15 @@ PlayingStatus PlayListItemWidget::getStatus() {
 }
 
 void PlayListItemWidget::onPlayClickFromStatusWidget() {
-    emit play(data);
+    emit playRequested(data);
 }
 
 void PlayListItemWidget::onPauseClickFromStatusWidget() {
-    emit pause(data);
+    emit pauseRequested(data);
 }
 
 void PlayListItemWidget::onResumeClickFromStatusWidget() {
-    emit resume(data);
+    emit resumeRequested(data);
 }
 
 void PlayListItemWidget::init() {
@@ -127,15 +127,15 @@ void PlayListItemWidget::init() {
 }
 
 void PlayListItemWidget::connectSignals() {
-    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
-    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::onPauseClickFromStatusWidget);
-    QObject::connect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::onResumeClickFromStatusWidget);
+    connect(ui->statusWidget, &PlayListItemStatusWidget::playRequested, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
+    connect(ui->statusWidget, &PlayListItemStatusWidget::pauseRequested, this, &PlayListItemWidget::onPauseClickFromStatusWidget);
+    connect(ui->statusWidget, &PlayListItemStatusWidget::resumeRequested, this, &PlayListItemWidget::onResumeClickFromStatusWidget);
 }
 
 void PlayListItemWidget::disconnectSignals() {
-    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::play, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
-    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::pause, this, &PlayListItemWidget::onPauseClickFromStatusWidget);
-    QObject::disconnect(ui->statusWidget, &PlayListItemStatusWidget::resume, this, &PlayListItemWidget::onResumeClickFromStatusWidget);
+    disconnect(ui->statusWidget, &PlayListItemStatusWidget::playRequested, this, &PlayListItemWidget::onPlayClickFromStatusWidget);
+    disconnect(ui->statusWidget, &PlayListItemStatusWidget::pauseRequested, this, &PlayListItemWidget::onPauseClickFromStatusWidget);
+    disconnect(ui->statusWidget, &PlayListItemStatusWidget::resumeRequested, this, &PlayListItemWidget::onResumeClickFromStatusWidget);
 }
 
 void PlayListItemWidget::enterEvent(QEnterEvent *event) {

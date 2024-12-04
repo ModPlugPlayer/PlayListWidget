@@ -85,13 +85,13 @@ PlayListItemStatusWidget::~PlayListItemStatusWidget() {
 void PlayListItemStatusWidget::onClick() {
     switch(status) {
     case PlayingStatus::Playing:
-        emit pause();
+        emit pauseRequested();
         break;
     case PlayingStatus::Paused:
-        emit resume();
+        emit resumeRequested();
         break;
     case PlayingStatus::Stopped:
-        emit play();
+        emit playRequested();
         break;
     }
 }

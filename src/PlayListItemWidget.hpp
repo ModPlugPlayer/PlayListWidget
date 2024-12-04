@@ -56,9 +56,9 @@ class PlayListItemWidget : public QWidget
         PlayingStatus getStatus();
 
     signals:
-        void pause(ModPlugPlayer::PlayListItem playListItem);
-        void resume(ModPlugPlayer::PlayListItem playListItem);
-        void play(ModPlugPlayer::PlayListItem playListItem);
+        void pauseRequested(ModPlugPlayer::PlayListItem playListItem);
+        void resumeRequested(ModPlugPlayer::PlayListItem playListItem);
+        void playRequested(ModPlugPlayer::PlayListItem playListItem);
 
     private slots:
         void onPlayClickFromStatusWidget();
