@@ -16,16 +16,15 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QDropEvent>
 #include <QDragMoveEvent>
 #include <QUrl>
-#include <PlayList.hpp>
+#include <Interfaces/PlayList.hpp>
 #include <PlayListDTOs.hpp>
 #include "DropIndicator.hpp"
-#include "PlayList.hpp"
 #include "PlayListItemWidget.hpp"
 #include <QMap>
 #include <boost/uuid/uuid.hpp>
 #include <mutex>
 
-class PlayListWidget : public QListWidget, public PlayList {
+class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::PlayList {
     Q_OBJECT
      public:
         explicit PlayListWidget(QWidget *parent = nullptr);
