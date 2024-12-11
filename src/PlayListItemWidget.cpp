@@ -156,7 +156,7 @@ const std::filesystem::path & PlayListItemWidget::getFilePath() const {
 
 void PlayListItemWidget::setFilePath(const std::filesystem::path & filePath) {
     data.filePath = filePath;
-    ui->fileName->setText(filePath.c_str());
+    ui->fileName->setText(QString(filePath.c_str()));
 }
 
 size_t PlayListItemWidget::getDuration() const {
