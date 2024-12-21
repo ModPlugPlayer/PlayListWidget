@@ -25,7 +25,10 @@ PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & pl
     setId(playListItem.id);
     setItemNumber(playListItem.itemNumber);
     setFormat(playListItem.format);
-    setTitle(playListItem.title);
+    QString title = playListItem.title;
+    if(title.trimmed().isEmpty())
+        title = QString::fromStdString(playListItem.filePath.stem().string());
+    setTitle(title);
     setFilePath(playListItem.filePath);
     setDuration(playListItem.duration);
 }
