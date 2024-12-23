@@ -42,10 +42,9 @@ void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowI
     playListMap[playListItem.id] = playlistItemWidget;
 
     setItemWidget(insertedItem, playlistItemWidget);
-    updateItemNumbers();
 }
 
-void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems, int rowIndex)
+/*void PlayListWidget::addPlayListItems(const std::vector<PlayListItem> & playListItems, int rowIndex)
 {
     const std::lock_guard<std::mutex> locker(listItemsLock);
     if(rowIndex == -1)
@@ -64,8 +63,7 @@ void PlayListWidget::addPlayListItems(const QList<PlayListItem> & playListItems,
         setItemWidget(insertedItem, playlistItemWidget);
         rowIndex++;
     }
-    updateItemNumbers();
-}
+}*/
 
 void PlayListWidget::removeSelectedItems()
 {

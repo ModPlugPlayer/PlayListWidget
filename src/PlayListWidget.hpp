@@ -23,15 +23,17 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QMap>
 #include <boost/uuid/uuid.hpp>
 #include <mutex>
+#include <vector>
 
 class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::PlayList {
     Q_OBJECT
      public:
         explicit PlayListWidget(QWidget *parent = nullptr);
         void addPlayListItem(const PlayListItem & playListItem, int rowIndex = -1);
-        void addPlayListItems(const QList<PlayListItem> & playListItems, int rowIndex = -1);
+        //void addPlayListItems(const std::vector<PlayListItem> & playListItems, int rowIndex = -1);
         void removeSelectedItems();
         PlayListItem getCurrentItem() override;
+        void updateItemNumbers();
 
      signals:
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
@@ -76,7 +78,6 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
          * @brief updateItemNumbers Updates item number of each playlist item.
          * If listItemsLock is not locked outside of this method, this method locks it until this method finishes to make the operation atomic.
          */
-        void updateItemNumbers();
         bool isValidDrop(const QPointF &dropPosition);
         void connectPlayListItemSignals(PlayListItemWidget &playListItemWidget);
         void disconnectPlayListItemSignals(PlayListItemWidget &playListItemWidget);
