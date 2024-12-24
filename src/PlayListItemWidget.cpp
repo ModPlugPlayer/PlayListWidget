@@ -124,16 +124,16 @@ void PlayListItemWidget::onResumeClickFromStatusWidget() {
 
 void PlayListItemWidget::init() {
     ui->setupUi(this);
-    SongFormatFont = new QFont("BodoniXT", QFont::Normal, -1, true);
-    SongFormatFont->setPixelSize(27);
+    SongFormatFont = new QFont("BodoniXT", QFont::Thin, -1, false);
+    SongFormatFont->setPixelSize(32);
     SongDurationFont = new QFont("Seven Segment", QFont::Normal);
     SongDurationFont->setPixelSize(27);
-    ItemNumberFont = new QFont("BodoniXT", QFont::Normal, -1, false);
-    ItemNumberFont->setPixelSize(27);
+    ItemNumberFont = new QFont("BodoniXT", QFont::Light, -1, false);
+    ItemNumberFont->setPixelSize(32);
     SongTitleFont = new QFont("Inter", QFont::Normal, -1, false);
-    SongTitleFont->setPixelSize(20);
+    SongTitleFont->setPixelSize(15);
     SongPathFont = new QFont("Inter", QFont::Normal, -1, false);
-    SongPathFont->setPixelSize(12);
+    SongPathFont->setPixelSize(10);
     ui->duration->setFont(*SongDurationFont);
     ui->format->setFont(*SongFormatFont);
     ui->statusWidget->setItemNumberFont(*ItemNumberFont);

@@ -25,6 +25,8 @@ void PlayListItemStatusWidget::showOnlyItemNumber() {
 }
 
 void PlayListItemStatusWidget::showOnlyPlayPauseButton() {
+    int numberLabelWidth = ui->itemNumberLabel->width();
+    ui->playPauseButton->setFixedWidth(numberLabelWidth);
     ui->itemNumberLabel->hide();
     ui->playPauseButton->show();
 }
