@@ -68,6 +68,11 @@ class PlayListItemWidget : public QWidget
     private:
         Ui::PlayListItemWidget *ui;
         PlayListItem data;
+        QFont *SongDurationFont;
+        QFont *SongFormatFont;
+        QFont *SongTitleFont;
+        QFont *SongPathFont;
+        QFont *ItemNumberFont;
 
     protected:
         void enterEvent(QEnterEvent *event);

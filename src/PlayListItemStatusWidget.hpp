@@ -28,6 +28,7 @@ class PlayListItemStatusWidget : public QWidget,  public LEDColorProperties {
     public:
         void setItemNumber(size_t itemNumber);
         void setStatus(PlayingStatus status);
+        void setItemNumberFont(QFont &font);
         PlayingStatus getStatus();
         explicit PlayListItemStatusWidget(QWidget *parent = nullptr);
         void showOnlyItemNumber();

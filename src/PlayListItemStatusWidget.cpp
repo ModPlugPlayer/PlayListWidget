@@ -44,6 +44,10 @@ void PlayListItemStatusWidget::setStatus(PlayingStatus status) {
     }
 }
 
+void PlayListItemStatusWidget::setItemNumberFont(QFont &font) {
+    ui->itemNumberLabel->setFont(font);
+}
+
 PlayingStatus PlayListItemStatusWidget::getStatus() {
     return status;
 }
