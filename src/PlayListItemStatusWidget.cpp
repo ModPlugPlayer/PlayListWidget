@@ -12,7 +12,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include "PlayListItemStatusWidget.hpp"
 #include "ui_PlayListItemStatusWidget.h"
 #include <SVGIcon.hpp>
-#include <ResourceUtil.hpp>
+#include <Util/ResourceUtil.hpp>
 
 
 void PlayListItemStatusWidget::setItemNumber(size_t itemNumber) {

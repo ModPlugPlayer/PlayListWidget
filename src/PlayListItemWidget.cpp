@@ -11,6 +11,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 
 #include "PlayListItemWidget.hpp"
 #include "ui_PlayListItemWidget.h"
+#include <Util/WindowUtil.hpp>
 
 PlayListItemWidget::PlayListItemWidget(QWidget *parent) :
     QWidget(parent),
@@ -81,27 +82,21 @@ void PlayListItemWidget::setFormat(const QString & format) {
     ui->format->setText(format);
 }
 
-static void setLabelFontWeight(QLabel *label, const QFont::Weight weight) {
-    QFont font = label->font();
-    font.setWeight(weight);
-    label->setFont(font);
-}
-
 void PlayListItemWidget::setStatus(PlayingStatus status) {
     ui->statusWidget->setStatus(status);
     switch(status) {
         case PlayingStatus::Playing:
-            setLabelFontWeight(ui->fileName, QFont::Weight::Bold);
-            setLabelFontWeight(ui->duration, QFont::Weight::Bold);
-            setLabelFontWeight(ui->format, QFont::Weight::Bold);
-            setLabelFontWeight(ui->title, QFont::Weight::Bold);
+            WindowUtil::setFontWeight(ui->fileName, QFont::Weight::Bold);
+            ui->duration->setFontWeight(QFont::Weight::Bold);
+            WindowUtil::setFontWeight(ui->format, QFont::Weight::Bold);
+            WindowUtil::setFontWeight(ui->title, QFont::Weight::Bold);
             break;
         case PlayingStatus::Paused:
         case PlayingStatus::Stopped:
-            setLabelFontWeight(ui->fileName, QFont::Weight::Normal);
-            setLabelFontWeight(ui->duration, QFont::Weight::Normal);
-            setLabelFontWeight(ui->format, QFont::Weight::Normal);
-            setLabelFontWeight(ui->title, QFont::Weight::Normal);
+            WindowUtil::setFontWeight(ui->fileName, QFont::Weight::Normal);
+            ui->duration->setFontWeight(QFont::Weight::Normal);
+            WindowUtil::setFontWeight(ui->format, QFont::Weight::Normal);
+            WindowUtil::setFontWeight(ui->title, QFont::Weight::Normal);
             break;
     }
 }
@@ -127,14 +122,15 @@ void PlayListItemWidget::init() {
     SongFormatFont = new QFont("BodoniXT", QFont::Thin, -1, false);
     SongFormatFont->setPixelSize(32);
     SongDurationFont = new QFont("Seven Segment", QFont::Normal);
-    SongDurationFont->setPixelSize(27);
+    SongDurationFont->setPixelSize(32);
     ItemNumberFont = new QFont("BodoniXT", QFont::Light, -1, false);
     ItemNumberFont->setPixelSize(32);
     SongTitleFont = new QFont("Inter", QFont::Normal, -1, false);
     SongTitleFont->setPixelSize(15);
     SongPathFont = new QFont("Inter", QFont::Normal, -1, false);
     SongPathFont->setPixelSize(10);
-    ui->duration->setFont(*SongDurationFont);
+    ui->duration->setNumberFont(*SongDurationFont);
+    ui->duration->setColonFont(*SongDurationFont);
     ui->format->setFont(*SongFormatFont);
     ui->statusWidget->setItemNumberFont(*ItemNumberFont);
     ui->title->setFont(*SongTitleFont);
@@ -183,6 +179,6 @@ size_t PlayListItemWidget::getDuration() const {
 
 void PlayListItemWidget::setDuration(size_t duration) {
     data.duration = duration;
-    ui->duration->setText(QString::number(duration));
+    ui->duration->setTime(duration);
 }
 

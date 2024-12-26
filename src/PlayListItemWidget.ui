@@ -50,8 +50,8 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="2">
-    <widget class="PlayListItemStatusWidget" name="statusWidget" native="true">
+   <item row="0" column="4" rowspan="2">
+    <widget class="QLabel" name="format">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -60,42 +60,52 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>30</width>
+       <width>70</width>
        <height>32</height>
       </size>
      </property>
+     <property name="text">
+      <string>Format</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
+     </property>
     </widget>
    </item>
-   <item row="0" column="6">
-    <widget class="QLabel" name="title">
+   <item row="0" column="3">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>5</width>
+       <height>5</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="7" rowspan="2">
+    <widget class="TimeDisplay" name="duration" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
-       <height>22</height>
+       <width>60</width>
+       <height>32</height>
       </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>22</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Title</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
-    <spacer name="horizontalSpacer_2">
+   <item row="0" column="5">
+    <spacer name="horizontalSpacer_3">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
@@ -141,30 +151,8 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="7" rowspan="2">
-    <widget class="QLabel" name="duration">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>60</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Duration</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4" rowspan="2">
-    <widget class="QLabel" name="format">
+   <item row="0" column="2">
+    <widget class="PlayListItemStatusWidget" name="statusWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -173,15 +161,9 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>70</width>
+       <width>30</width>
        <height>32</height>
       </size>
-     </property>
-     <property name="text">
-      <string>Format</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
      </property>
     </widget>
    </item>
@@ -201,21 +183,33 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="5">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+   <item row="0" column="6">
+    <widget class="QLabel" name="title">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Policy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+     <property name="minimumSize">
       <size>
-       <width>5</width>
-       <height>5</height>
+       <width>0</width>
+       <height>22</height>
       </size>
      </property>
-    </spacer>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>22</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Title</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -224,6 +218,12 @@
    <class>PlayListItemStatusWidget</class>
    <extends>QWidget</extends>
    <header>PlayListItemStatusWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TimeDisplay</class>
+   <extends>QWidget</extends>
+   <header>TimeDisplay.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
