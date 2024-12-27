@@ -17,6 +17,13 @@ PlayListHeaderWidget::PlayListHeaderWidget(QWidget *parent) :
     ui(new Ui::PlayListHeaderWidget)
 {
     ui->setupUi(this);
+    InterFont = new QFont("Inter", QFont::Normal);
+    InterFont->setPixelSize(14);
+    ui->itemNumberLabel->setFont(*InterFont);
+    ui->formatLabel->setFont(*InterFont);
+    ui->titleLabel->setFont(*InterFont);
+    ui->durationLabel->setFont(*InterFont);
+
 }
 
 void PlayListHeaderWidget::setDurationLabelWidth(int size)

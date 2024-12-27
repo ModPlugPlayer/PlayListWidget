@@ -27,5 +27,6 @@ public:
 
 private:
     Ui::PlayListHeaderWidget *ui;
+    QFont *InterFont;
 };
 
