@@ -70,7 +70,7 @@ const QString & PlayListItemWidget::getTitle() const {
 
 void PlayListItemWidget::setTitle(const QString & title) {
     data.title = title;
-    ui->title->setText(title);
+    ui->titleInfoWidget->setTitle(title);
 }
 
 const QString & PlayListItemWidget::getFormat() const {
@@ -86,17 +86,15 @@ void PlayListItemWidget::setStatus(PlayingStatus status) {
     ui->statusWidget->setStatus(status);
     switch(status) {
         case PlayingStatus::Playing:
-            WindowUtil::setFontWeight(ui->fileName, QFont::Weight::Bold);
             ui->duration->setFontWeight(QFont::Weight::Bold);
+            ui->titleInfoWidget->setFontWeight(QFont::Weight::Bold);
             WindowUtil::setFontWeight(ui->format, QFont::Weight::Bold);
-            WindowUtil::setFontWeight(ui->title, QFont::Weight::Bold);
             break;
         case PlayingStatus::Paused:
         case PlayingStatus::Stopped:
-            WindowUtil::setFontWeight(ui->fileName, QFont::Weight::Normal);
             ui->duration->setFontWeight(QFont::Weight::Normal);
+            ui->titleInfoWidget->setFontWeight(QFont::Weight::Normal);
             WindowUtil::setFontWeight(ui->format, QFont::Weight::Normal);
-            WindowUtil::setFontWeight(ui->title, QFont::Weight::Normal);
             break;
     }
 }
@@ -125,16 +123,10 @@ void PlayListItemWidget::init() {
     SongDurationFont->setPixelSize(32);
     ItemNumberFont = new QFont("BodoniXT", QFont::Light, -1, false);
     ItemNumberFont->setPixelSize(32);
-    SongTitleFont = new QFont("Inter", QFont::Normal, -1, false);
-    SongTitleFont->setPixelSize(15);
-    SongPathFont = new QFont("Inter", QFont::Normal, -1, false);
-    SongPathFont->setPixelSize(10);
     ui->duration->setNumberFont(*SongDurationFont);
     ui->duration->setColonFont(*SongDurationFont);
     ui->format->setFont(*SongFormatFont);
     ui->statusWidget->setItemNumberFont(*ItemNumberFont);
-    ui->title->setFont(*SongTitleFont);
-    ui->fileName->setFont(*SongPathFont);
     setMouseTracking(true);
     setAttribute(Qt::WA_Hover);
     connectSignals();
@@ -170,7 +162,7 @@ const std::filesystem::path & PlayListItemWidget::getFilePath() const {
 
 void PlayListItemWidget::setFilePath(const std::filesystem::path & filePath) {
     data.filePath = filePath;
-    ui->fileName->setText(QString(filePath.c_str()));
+    ui->titleInfoWidget->setFilePath(filePath);
 }
 
 size_t PlayListItemWidget::getDuration() const {

@@ -70,8 +70,6 @@ class PlayListItemWidget : public QWidget
         PlayListItem data;
         QFont *SongDurationFont;
         QFont *SongFormatFont;
-        QFont *SongTitleFont;
-        QFont *SongPathFont;
         QFont *ItemNumberFont;
 
     protected:
