@@ -19,6 +19,11 @@ PlayListHeaderWidget::PlayListHeaderWidget(QWidget *parent) :
     ui->setupUi(this);
 }
 
+void PlayListHeaderWidget::setDurationLabelWidth(int size)
+{
+    ui->durationLabel->setFixedSize(size, ui->durationLabel->size().height());
+}
+
 PlayListHeaderWidget::~PlayListHeaderWidget()
 {
     delete ui;

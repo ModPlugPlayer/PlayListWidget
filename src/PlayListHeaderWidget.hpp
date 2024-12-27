@@ -20,8 +20,9 @@ class PlayListHeaderWidget : public QWidget
 {
     Q_OBJECT
 
-        public:
-                 explicit PlayListHeaderWidget(QWidget *parent = nullptr);
+public:
+    explicit PlayListHeaderWidget(QWidget *parent = nullptr);
+    void setDurationLabelWidth(int size);
     ~PlayListHeaderWidget();
 
 private:

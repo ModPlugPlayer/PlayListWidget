@@ -23,12 +23,13 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <QMap>
 #include <boost/uuid/uuid.hpp>
 #include <mutex>
-#include <vector>
+#include <EventFilters.hpp>
 
 class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::PlayList {
     Q_OBJECT
      public:
         explicit PlayListWidget(QWidget *parent = nullptr);
+        ~PlayListWidget();
         void addPlayListItem(const PlayListItem & playListItem, int rowIndex = -1);
         //void addPlayListItems(const std::vector<PlayListItem> & playListItems, int rowIndex = -1);
         void removeSelectedItems();
@@ -47,6 +48,8 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
         void stopRequested(const ModPlugPlayer::PlayListItem playListItem) override;
         void repeatRequested(const ModPlugPlayer::RepeatMode repeatMode) override;
         void clearPlayListRequested() override;
+        void horizontalScrollBarVisibilityChanged(bool isVisible) override;
+        void verticalScrollBarVisibilityChanged(bool isVisible) override;
 
     public slots:
         void onMetaDataObtained(const ModPlugPlayer::PlayListItem playListItem) override;
@@ -86,4 +89,6 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
         QMap<boost::uuids::uuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
         RepeatMode repeatMode = RepeatMode::NoRepeat;
+        EventFilters::ScrollBarVisibilityEventFilter *verticalScrollBarVisibilityEventFilter = nullptr;
+        EventFilters::ScrollBarVisibilityEventFilter *horizontalScrollBarVisibilityEventFilter = nullptr;
 };

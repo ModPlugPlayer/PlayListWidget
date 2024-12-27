@@ -23,6 +23,20 @@ PlayListWidget::PlayListWidget(QWidget *parent)
     connect(this, &PlayListWidget::itemDoubleClicked, this, &PlayListWidget::onItemDoubleClicked);
     connect(this, &PlayListWidget::clearPlayListRequested, this, &PlayListWidget::onClearPlayListRequested);
     //verticalScrollBar()->setStyleSheet(PlayListStyleSheets::scrollBar);
+    verticalScrollBarVisibilityEventFilter = new EventFilters::ScrollBarVisibilityEventFilter();
+    verticalScrollBarVisibilityEventFilter->setSignal(this, &PlayListWidget::verticalScrollBarVisibilityChanged);
+    verticalScrollBar()->installEventFilter(verticalScrollBarVisibilityEventFilter);
+
+    horizontalScrollBarVisibilityEventFilter = new EventFilters::ScrollBarVisibilityEventFilter();
+    horizontalScrollBarVisibilityEventFilter->setSignal(this, &PlayListWidget::horizontalScrollBarVisibilityChanged);
+    horizontalScrollBar()->installEventFilter(horizontalScrollBarVisibilityEventFilter);
+}
+
+PlayListWidget::~PlayListWidget() {
+    horizontalScrollBar()->removeEventFilter(horizontalScrollBarVisibilityEventFilter);
+    verticalScrollBar()->removeEventFilter(verticalScrollBarVisibilityEventFilter);
+    delete horizontalScrollBarVisibilityEventFilter;
+    delete verticalScrollBarVisibilityEventFilter;
 }
 
 void PlayListWidget::addPlayListItem(const PlayListItem & playListItem, int rowIndex)
