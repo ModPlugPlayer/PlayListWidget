@@ -111,6 +111,19 @@ PlayListItem PlayListWidget::getCurrentItem()
     return playListItem;
 }
 
+std::vector<PlayListItem> PlayListWidget::getAllItems() {
+    std::vector<PlayListItem> playListItems;
+    playListItems.resize(playListMap.count());
+    const std::lock_guard<std::mutex> locker(listItemsLock);
+
+    int amount = count();
+    for (auto [id, playListItemWidget] : playListMap.asKeyValueRange()) {
+        PlayListItem playListItem = playListItemWidget->getData();
+        playListItems[playListItem.itemNumber] = playListItem;
+    }
+    return playListItems;
+}
+
 void PlayListWidget::onMetaDataObtained(const PlayListItem playListItem) {
 
 }

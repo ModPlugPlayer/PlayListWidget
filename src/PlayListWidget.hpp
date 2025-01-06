@@ -34,6 +34,7 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
         //void addPlayListItems(const std::vector<PlayListItem> & playListItems, int rowIndex = -1);
         void removeSelectedItems();
         PlayListItem getCurrentItem() override;
+        std::vector<PlayListItem> getAllItems();
         void updateItemNumbers();
 
      signals:
