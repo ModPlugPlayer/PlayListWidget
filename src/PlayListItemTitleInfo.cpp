@@ -31,12 +31,12 @@ PlayListItemTitleInfo::~PlayListItemTitleInfo() {
 
 void PlayListItemTitleInfo::setFilePath(const std::filesystem::path &filePath) {
     ui->fileName->setText(QString(filePath.c_str()));
-    ui->fileName->setMinimumWidth(0);
+    ui->fileName->setMinimumSize(10, 10);
 }
 
 void PlayListItemTitleInfo::setTitle(const QString &title) {
     ui->title->setText(title);
-    ui->title->setMinimumWidth(0);
+    ui->title->setMinimumSize(10, 10);
 }
 
 void PlayListItemTitleInfo::setFontWeight(const QFont::Weight fontWeight) {
