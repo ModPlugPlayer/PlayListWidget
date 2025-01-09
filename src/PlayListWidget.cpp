@@ -14,6 +14,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include "PlayListWidget.hpp"
 #include "PlayListItemWidget.hpp"
 #include "PlayListStyleSheets.hpp"
+#include <MPPExceptions.hpp>
 
 PlayListWidget::PlayListWidget(QWidget *parent)
     : QListWidget(parent)
@@ -367,6 +368,44 @@ void PlayListWidget::updateItemNumbers()
     //qDebug()<<"Update " + QString::number(updateNo++);
     if(!listItemsLockIsAlreadyLocked)
         listItemsLock.unlock();
+}
+
+void PlayListWidget::updateDirtyItems() {
+    if(metaDataReader == nullptr) {
+        throw Exceptions::ModPlugPlayerException("MetaDataReader is not set in PlayListWidget.");
+    }
+
+    bool listItemsLockIsAlreadyLocked = !listItemsLock.try_lock();
+
+    int len = count();
+    for(int i=0; i<len; i++) {
+        QListWidgetItem * currentItem = item(i);
+        PlayListItemWidget *playListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(currentItem));
+        PlayListItem playListItem = playListItemWidget->getData();
+        SongFileInfo modInfo;
+        try{
+            modInfo = metaDataReader->getMetaData(playListItem.filePath);
+        }
+        catch(Exceptions::ModPlugPlayerException &e) {
+            continue;
+        }
+
+        playListItem.filePath = modInfo.filePath;
+        playListItem.title = modInfo.songInfo.songTitle.c_str();
+        playListItem.format = QString(modInfo.songInfo.songFormat.c_str()).toUpper();
+        playListItem.duration = modInfo.songInfo.songDuration;
+        playListItem.dirty = false;
+        playListItemWidget->setData(playListItem);
+        playListItemWidget->setFormat(playListItem.format);
+        playListItemWidget->setTitle(playListItem.title);
+        playListItemWidget->setDuration(playListItem.duration);
+    }
+    if(!listItemsLockIsAlreadyLocked)
+        listItemsLock.unlock();
+}
+
+void PlayListWidget::setMetaDataReader(const Interfaces::MetaDataReader *metaDataReader) {
+    this->metaDataReader = (Interfaces::MetaDataReader *) metaDataReader;
 }
 
 bool isAdjacent(const QList<int> &list) {

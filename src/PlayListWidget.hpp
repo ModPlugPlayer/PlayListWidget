@@ -24,6 +24,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include <boost/uuid/uuid.hpp>
 #include <mutex>
 #include <EventFilters.hpp>
+#include <Interfaces/MetaDataReader.hpp>
 
 class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::PlayList {
     Q_OBJECT
@@ -36,6 +37,8 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
         PlayListItem getCurrentItem() override;
         std::vector<PlayListItem> getAllItems();
         void updateItemNumbers();
+        void updateDirtyItems();
+        void setMetaDataReader(const Interfaces::MetaDataReader *metaDataReader) override;
 
      signals:
         void fileDropped(const QUrl &fileUrl, int droppedIndex);
@@ -89,6 +92,7 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
         std::mutex listItemsLock;
         QMap<boost::uuids::uuid, PlayListItemWidget *> playListMap;
         PlayListItems playList;
+        Interfaces::MetaDataReader *metaDataReader = nullptr;
         RepeatMode repeatMode = RepeatMode::NoRepeat;
         EventFilters::ScrollBarVisibilityEventFilter *verticalScrollBarVisibilityEventFilter = nullptr;
         EventFilters::ScrollBarVisibilityEventFilter *horizontalScrollBarVisibilityEventFilter = nullptr;
