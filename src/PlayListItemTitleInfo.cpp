@@ -30,11 +30,13 @@ PlayListItemTitleInfo::~PlayListItemTitleInfo() {
 }
 
 void PlayListItemTitleInfo::setFilePath(const std::filesystem::path &filePath) {
+    this->filePath = filePath;
     ui->fileName->setText(QString(filePath.c_str()));
     ui->fileName->setMinimumSize(10, 10);
 }
 
 void PlayListItemTitleInfo::setTitle(const QString &title) {
+    this->title = title;
     ui->title->setText(title);
     ui->title->setMinimumSize(10, 10);
 }
@@ -43,4 +45,20 @@ void PlayListItemTitleInfo::setFontWeight(const QFont::Weight fontWeight) {
     WindowUtil::setFontWeight(ui->fileName, fontWeight);
     WindowUtil::setFontWeight(ui->title, fontWeight);
 
+}
+
+void PlayListItemTitleInfo::updateTitle() {
+    QString titleText = WindowUtil::shortenTextToWidth(ui->title->font(), ui->title->width(), title);
+    ui->title->setText(titleText);
+    ui->title->setText(titleText);
+}
+
+void PlayListItemTitleInfo::updateFilePath() {
+    QString fileNameText = WindowUtil::shortenFilePathToWidth(ui->fileName->font(), ui->fileName->width(), filePath);
+    ui->fileName->setText(fileNameText);
+}
+
+void PlayListItemTitleInfo::resizeEvent(QResizeEvent *event) {
+    updateTitle();
+    updateFilePath();
 }

@@ -29,9 +29,14 @@ public:
     void setFilePath(const std::filesystem::path & filePath);
     void setTitle(const QString & title);
     void setFontWeight(const QFont::Weight fontWeight);
+    void updateTitle();
+    void updateFilePath();
 
 private:
+    void resizeEvent(QResizeEvent* event) override;
     Ui::PlayListItemTitleInfo *ui;
     QFont *SongTitleFont;
     QFont *SongPathFont;
+    std::filesystem::path filePath;
+    QString title;
 };
