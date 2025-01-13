@@ -45,7 +45,6 @@ class PlayListWidget : public QListWidget, public ModPlugPlayer::Interfaces::Pla
         void filesDropped(const QList<QUrl> &fileUrls, int droppedIndex);
 
         void metaDataRequested(const ModPlugPlayer::PlayListItem playListItem) override;
-        void loadRequested(const ModPlugPlayer::PlayListItem playListItem) override;
         void playRequested(const ModPlugPlayer::PlayListItem playListItem) override;
         void pauseRequested(const ModPlugPlayer::PlayListItem playListItem) override;
         void resumeRequested(const ModPlugPlayer::PlayListItem playListItem) override;
