@@ -35,22 +35,17 @@ class PlayListItemWidget : public QWidget
         void setData(const PlayListItem &playListItem);
 
         boost::uuids::uuid getId() const;
-        void setId(const boost::uuids::uuid &id);
 
         size_t getItemNumber() const;
         void setItemNumber(size_t itemNumber);
 
         const std::filesystem::path & getFilePath() const;
-        void setFilePath(const std::filesystem::path & filePath);
 
         size_t getDuration() const;
-        void setDuration(size_t duration);
 
-        const QString & getTitle() const;
-        void setTitle(const QString & title);
+        QString getTitle() const;
 
-        const QString & getFormat() const;
-        void setFormat(const QString & format);
+        QString getFormat() const;
 
         void setStatus(PlayingStatus status);
         PlayingStatus getStatus();

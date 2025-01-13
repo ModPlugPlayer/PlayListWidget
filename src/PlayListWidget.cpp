@@ -384,21 +384,15 @@ void PlayListWidget::updateDirtyItems() {
         PlayListItem playListItem = playListItemWidget->getData();
         SongFileInfo modInfo;
         try{
-            modInfo = metaDataReader->getMetaData(playListItem.filePath);
+            modInfo = metaDataReader->getMetaData(playListItem.songFileInfo.filePath);
         }
         catch(Exceptions::ModPlugPlayerException &e) {
             continue;
         }
 
-        playListItem.filePath = modInfo.filePath;
-        playListItem.title = modInfo.songInfo.songTitle.c_str();
-        playListItem.format = QString(modInfo.songInfo.songFormat.c_str()).toUpper();
-        playListItem.duration = modInfo.songInfo.songDuration;
+        playListItem.songFileInfo = modInfo;
         playListItem.dirty = false;
         playListItemWidget->setData(playListItem);
-        playListItemWidget->setFormat(playListItem.format);
-        playListItemWidget->setTitle(playListItem.title);
-        playListItemWidget->setDuration(playListItem.duration);
     }
     if(!listItemsLockIsAlreadyLocked)
         listItemsLock.unlock();

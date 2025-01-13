@@ -39,6 +39,8 @@ void PlayListItemTitleInfo::setTitle(const QString &title) {
     this->title = title;
     ui->title->setText(title);
     ui->title->setMinimumSize(10, 10);
+    updateFilePath();
+    updateTitle();
 }
 
 void PlayListItemTitleInfo::setFontWeight(const QFont::Weight fontWeight) {

@@ -23,15 +23,8 @@ PlayListItemWidget::PlayListItemWidget(QWidget * parent, const PlayListItem & pl
     QWidget(parent),
     ui(new Ui::PlayListItemWidget) {
     init();
-    setId(playListItem.id);
+    setData(playListItem);
     setItemNumber(playListItem.itemNumber);
-    setFormat(playListItem.format);
-    QString title = playListItem.title;
-    if(title.trimmed().isEmpty())
-        title = QString::fromStdString(playListItem.filePath.stem().string());
-    setTitle(title);
-    setFilePath(playListItem.filePath);
-    setDuration(playListItem.duration);
 }
 
 PlayListItemWidget::~PlayListItemWidget() {
@@ -45,14 +38,18 @@ PlayListItem PlayListItemWidget::getData() const {
 
 void PlayListItemWidget::setData(const PlayListItem & playListItem) {
     data = playListItem;
+    ui->format->setText(QString::fromStdString(playListItem.songFileInfo.songInfo.songFormat).toUpper());
+    ui->titleInfoWidget->setFilePath(playListItem.songFileInfo.filePath);
+    ui->duration->setTime(playListItem.songFileInfo.songInfo.songDuration);
+
+    QString title = QString::fromStdString(playListItem.songFileInfo.songInfo.songTitle);
+    if(title.trimmed().isEmpty())
+        title = QString::fromStdString(playListItem.songFileInfo.filePath.stem().string());
+    ui->titleInfoWidget->setTitle(title);
 }
 
 boost::uuids::uuid PlayListItemWidget::getId() const {
     return data.id;
-}
-
-void PlayListItemWidget::setId(const boost::uuids::uuid &id) {
-    data.id = id;
 }
 
 size_t PlayListItemWidget::getItemNumber() const {
@@ -64,22 +61,12 @@ void PlayListItemWidget::setItemNumber(size_t itemNumber) {
     ui->statusWidget->setItemNumber(itemNumber);
 }
 
-const QString & PlayListItemWidget::getTitle() const {
-    return data.title;
+QString PlayListItemWidget::getTitle() const {
+    return QString::fromStdString(data.songFileInfo.songInfo.songTitle);
 }
 
-void PlayListItemWidget::setTitle(const QString & title) {
-    data.title = title;
-    ui->titleInfoWidget->setTitle(title);
-}
-
-const QString & PlayListItemWidget::getFormat() const {
-    return data.title;
-}
-
-void PlayListItemWidget::setFormat(const QString & format) {
-    data.format = format;
-    ui->format->setText(format);
+QString PlayListItemWidget::getFormat() const {
+    return QString::fromStdString(data.songFileInfo.songInfo.songFormat);
 }
 
 void PlayListItemWidget::setStatus(PlayingStatus status) {
@@ -157,20 +144,10 @@ void PlayListItemWidget::leaveEvent(QEvent *event) {
 }
 
 const std::filesystem::path & PlayListItemWidget::getFilePath() const {
-    return data.filePath;
-}
-
-void PlayListItemWidget::setFilePath(const std::filesystem::path & filePath) {
-    data.filePath = filePath;
-    ui->titleInfoWidget->setFilePath(filePath);
+    return data.songFileInfo.filePath;
 }
 
 size_t PlayListItemWidget::getDuration() const {
-    return data.duration;
-}
-
-void PlayListItemWidget::setDuration(size_t duration) {
-    data.duration = duration;
-    ui->duration->setTime(duration);
+    return data.songFileInfo.songInfo.songDuration;
 }
 
