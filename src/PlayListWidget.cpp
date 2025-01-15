@@ -14,6 +14,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 #include "PlayListWidget.hpp"
 #include "PlayListItemWidget.hpp"
 #include "PlayListStyleSheets.hpp"
+#include <MessageCenter.hpp>
 #include <MPPExceptions.hpp>
 
 PlayListWidget::PlayListWidget(QWidget *parent)
@@ -189,7 +190,7 @@ void PlayListWidget::onNextRequested() {
     scrollToItemIfNeeded(nextWidgetItem);
 
     PlayListItemWidget *nextPlayListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(nextWidgetItem));
-    emit playRequested(nextPlayListItemWidget->getData());
+    emit MessageCenter::getInstance().playRequested(nextPlayListItemWidget->getData());
 }
 
 void PlayListWidget::onPreviousRequested() {
@@ -214,7 +215,7 @@ void PlayListWidget::onPreviousRequested() {
     scrollToItemIfNeeded(previousWidgetItem);
 
     PlayListItemWidget *previousPlayListItemWidget = dynamic_cast<PlayListItemWidget*>(itemWidget(previousWidgetItem));
-    emit playRequested(previousPlayListItemWidget->getData());
+    emit MessageCenter::getInstance().playRequested(previousPlayListItemWidget->getData());
 }
 
 void PlayListWidget::onClearPlayListRequested() {
@@ -312,8 +313,7 @@ void PlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
 {
     PlayListItemWidget * widget = dynamic_cast<PlayListItemWidget*>(itemWidget(item));
     PlayListItem playListItem = widget->getData();
-    emit playRequested(widget->getData());
-    qDebug()<<"Item double clicked " << widget->getFilePath().c_str();
+    emit MessageCenter::getInstance().playRequested(widget->getData());
 }
 
 QPointF PlayListWidget::getDropIndicatorPosition(const QPointF &mousePosition)
