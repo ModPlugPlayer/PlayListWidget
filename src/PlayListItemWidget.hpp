@@ -47,8 +47,8 @@ class PlayListItemWidget : public QWidget
 
         QString getFormat() const;
 
-        void setStatus(PlayingStatus status);
-        PlayingStatus getStatus();
+        void setStatus(PlayingState status);
+        PlayingState getStatus();
 
     signals:
         void pauseRequested(ModPlugPlayer::PlayListItem playListItem);

@@ -31,16 +31,16 @@ void PlayListItemStatusWidget::showOnlyPlayPauseButton() {
     ui->playPauseButton->show();
 }
 
-void PlayListItemStatusWidget::setStatus(PlayingStatus status) {
+void PlayListItemStatusWidget::setStatus(PlayingState status) {
     this->status = status;
     switch(status) {
-    case PlayingStatus::Paused:
+    case PlayingState::Paused:
         ui->playPauseButton->setIcon(iconPause->getActiveIcon());
         break;
-    case PlayingStatus::Playing:
+    case PlayingState::Playing:
         ui->playPauseButton->setIcon(iconPause->getInactiveIcon());
         break;
-    case PlayingStatus::Stopped:
+    case PlayingState::Stopped:
         ui->playPauseButton->setIcon(iconPlay->getInactiveIcon());
         break;
     }
@@ -50,7 +50,7 @@ void PlayListItemStatusWidget::setItemNumberFont(QFont &font) {
     ui->itemNumberLabel->setFont(font);
 }
 
-PlayingStatus PlayListItemStatusWidget::getStatus() {
+PlayingState PlayListItemStatusWidget::getStatus() {
     return status;
 }
 
@@ -90,13 +90,13 @@ PlayListItemStatusWidget::~PlayListItemStatusWidget() {
 
 void PlayListItemStatusWidget::onClick() {
     switch(status) {
-    case PlayingStatus::Playing:
+    case PlayingState::Playing:
         emit pauseRequested();
         break;
-    case PlayingStatus::Paused:
+    case PlayingState::Paused:
         emit resumeRequested();
         break;
-    case PlayingStatus::Stopped:
+    case PlayingState::Stopped:
         emit playRequested();
         break;
     }

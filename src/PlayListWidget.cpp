@@ -137,19 +137,19 @@ void PlayListWidget::onLoaded(const PlayListItem playListItem, bool successfull)
 void PlayListWidget::onPlayingStarted(const PlayListItem playListItem) {
     const std::lock_guard<std::mutex> locker(listItemsLock);
     if(currentItem != nullptr)
-        currentItem->setStatus(PlayingStatus::Stopped);
+        currentItem->setStatus(PlayingState::Stopped);
 
     currentItem = playListMap[playListItem.id];
 
     if(currentItem != nullptr)
-        currentItem->setStatus(PlayingStatus::Playing);
+        currentItem->setStatus(PlayingState::Playing);
 }
 
 void PlayListWidget::onPaused(const PlayListItem playListItem) {
     if(!playListMap.contains(playListItem.id))
         return;
     PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
-    playListItemWidget->setStatus(PlayingStatus::Paused);
+    playListItemWidget->setStatus(PlayingState::Paused);
 
 }
 
@@ -157,14 +157,14 @@ void PlayListWidget::onResumed(const PlayListItem playListItem) {
     if(!playListMap.contains(playListItem.id))
         return;
     PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
-    playListItemWidget->setStatus(PlayingStatus::Playing);
+    playListItemWidget->setStatus(PlayingState::Playing);
 }
 
 void PlayListWidget::onStopped(const PlayListItem playListItem) {
     if(!playListMap.contains(playListItem.id))
         return;
     PlayListItemWidget * playListItemWidget = playListMap[playListItem.id];
-    playListItemWidget->setStatus(PlayingStatus::Stopped);
+    playListItemWidget->setStatus(PlayingState::Stopped);
 }
 
 void PlayListWidget::onNextRequested() {
@@ -185,7 +185,7 @@ void PlayListWidget::onNextRequested() {
         nextWidgetItem = item(itemNumber+1);
     }
 
-    currentItem->setStatus(PlayingStatus::Stopped);
+    currentItem->setStatus(PlayingState::Stopped);
 
     scrollToItemIfNeeded(nextWidgetItem);
 
@@ -210,7 +210,7 @@ void PlayListWidget::onPreviousRequested() {
         previousWidgetItem = item(itemNumber-1);
     }
 
-    currentItem->setStatus(PlayingStatus::Stopped);
+    currentItem->setStatus(PlayingState::Stopped);
 
     scrollToItemIfNeeded(previousWidgetItem);
 

@@ -69,16 +69,16 @@ QString PlayListItemWidget::getFormat() const {
     return QString::fromStdString(data.songFileInfo.songInfo.songFormat);
 }
 
-void PlayListItemWidget::setStatus(PlayingStatus status) {
+void PlayListItemWidget::setStatus(PlayingState status) {
     ui->statusWidget->setStatus(status);
     switch(status) {
-        case PlayingStatus::Playing:
+        case PlayingState::Playing:
             ui->duration->setFontWeight(QFont::Weight::Bold);
             ui->titleInfoWidget->setFontWeight(QFont::Weight::Bold);
             WindowUtil::setFontWeight(ui->format, QFont::Weight::Bold);
             break;
-        case PlayingStatus::Paused:
-        case PlayingStatus::Stopped:
+        case PlayingState::Paused:
+        case PlayingState::Stopped:
             ui->duration->setFontWeight(QFont::Weight::Normal);
             ui->titleInfoWidget->setFontWeight(QFont::Weight::Normal);
             WindowUtil::setFontWeight(ui->format, QFont::Weight::Normal);
@@ -86,7 +86,7 @@ void PlayListItemWidget::setStatus(PlayingStatus status) {
     }
 }
 
-PlayingStatus PlayListItemWidget::getStatus() {
+PlayingState PlayListItemWidget::getStatus() {
     return ui->statusWidget->getStatus();
 }
 

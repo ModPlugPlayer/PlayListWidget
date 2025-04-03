@@ -27,9 +27,9 @@ class PlayListItemStatusWidget : public QWidget,  public LEDColorProperties {
     Q_OBJECT
     public:
         void setItemNumber(size_t itemNumber);
-        void setStatus(PlayingStatus status);
+        void setStatus(PlayingState state);
         void setItemNumberFont(QFont &font);
-        PlayingStatus getStatus();
+        PlayingState getStatus();
         explicit PlayListItemStatusWidget(QWidget *parent = nullptr);
         void showOnlyItemNumber();
         void showOnlyPlayPauseButton();
@@ -42,7 +42,7 @@ private slots:
         void onClick();
 private:
         Ui::PlayListItemStatusWidget *ui;
-        PlayingStatus status = PlayingStatus::Stopped;
+        PlayingState status = PlayingState::Stopped;
 protected:
         SVGIcon *iconPlay, *iconPause, *iconStop,
                 *iconRewind, *iconFastForward, *iconPrevious, *iconNext;
